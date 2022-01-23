@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Clément Tauber">
+    <meta name="description" content="Fractions est une appli web libre et gratuite pour réviser et s'entraîner au calcul de fractions de façon progressive. L'appli comprend des exercices pour revoir les différentes règles de calcul (addition, multiplication,...) ainsi que des exercices générés aléatoirement pour s'entraîner à volonté. Les fractions rationnelles et les fractions complexes sont aussi abordées à la fin.">  
+      
+    <meta name="viewport" content="width=device-width">  
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/~tauber/fractions/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/~tauber/fractions/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/~tauber/fractions/favicon-16x16.png">
+    <link rel="manifest" href="/~tauber/fractions/site.webmanifest">
+    <link rel="mask-icon" href="/~tauber/fractions/safari-pinned-tab.svg" color="#306BAC">
+    <link rel="shortcut icon" href="/~tauber/fractions/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/~tauber/fractions/browserconfig.xml">
+    <meta name="theme-color" content="#306BAC">
+      
+    <title>Fractions</title>
+      
+    <link href="style.css" rel="stylesheet">
+
+    <script src="libraries/math/math.js" type="text/javascript" defer></script>
+      
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>      
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>    
+  </head>
+  
+  <body>
+    <div class="containerMenu">
+      <div class="title"><span id="titleup">frac</span><br><hr class="hrTitle"><span id="titledown">Iions</span></div>
+      <div class="menu">
+          <button id="start" class="menubutton">Reprendre</button><br>
+          <button id="erase" class="menubutton">Effacer les données</button><br>
+          <button id="offline" class="menubutton">Mode hors-ligne</button><br>
+          <button id="shortcuts" class="menubutton">Raccourcis clavier</button><br>
+          <button id="about" class="menubutton">A propos</button>
+      </div>
+      <div class="menuTextBox">
+          <div class="hiddenTextBox" id="eraseText">Cliquer sur confirmer pour effacer les données stockées sur ce navigateur et réinitialiser votre progression dans les exercices. <br> <button id="confirmErase" class="menubutton">Confirmer</button></div>
+          <div class="hiddenTextBox" id="erasingTerminated">Les données ont été effacées !</div>
+          <div class="hiddenTextBox" id="offlineText">Mode hors-ligne en construction...</div>
+          <div class="hiddenTextBox" id="shortcutsText">Si vous disposez d'un clavier, vous pouvez utiliser les raccourcis suivants:
+              <ul>
+                  <li><span class="keyboard">+</span> et <span class="keyboard">-</span> : changer le signe</li>
+                  <li> <span class="keyboard">/</span> ou <span class="keyboard">↓</span> : passer du numérateur au dénominateur</li>
+                  <li><span class="keyboard">↑</span> : passer du dénominateur au numérateur</li>
+                  <li><span class="keyboard">Entrée &crarr;</span> : valider la fraction</li>
+              </ul> 
+          Ex: <span class="keyboard">-</span> <span class="keyboard">5</span> <span class="keyboard">/</span> <span class="keyboard">7</span> <span class="keyboard">&crarr;</span> valide \(- \frac{5}{7} \).
+          </div>
+          <div class="hiddenTextBox" id="aboutText">Fractions est une appli web libre et gratuite développée par Clément Tauber (clement.tauber -arobase- math.unistra.fr).<br> Version 1.0 du 16 janvier 2022. <br> Code source bientôt disponible.</div>
+      </div>
+    </div>
+      
+      
+      <div class="container">
+      <div class="header">
+          <div class="menulink menuleft" id="btnMenu"><i class="fas fa-bars"></i></div> 
+          <h1></h1>
+          <div class="menulink menuright" id="btnCarte"><i class="fas fa-project-diagram"></i></div>
+      </div>  
+      
+
+          
+     <form class="main">
+
+      <div id="current">
+        <div id="opacityWrapper">
+        
+        
+        <div id="question"></div>
+        <div id="partial"></div>
+          
+        
+        <div id="allInputs"> 
+        \(=\)
+        <input type="checkbox" id="sign" name="sign" value="+1">
+        <label for="sign">
+               <span class="plus">+</span>
+               <span class="minus">&horbar;</span>
+        </label> 
+          
+            
+        <div id="fraction">
+          
+        <input id="num" name="numerator" type="number" min="0" max="999" step="0" required>
+          
+        <hr class="hrFraction">
+        <input id="den" name="denominator" type="number" min="1" max="999" step="0" required> 
+        </div>
+        </div> 
+          </div>
+          <div id="completedExercise">Exercice terminé !</div>
+         </div>
+         
+        <div id="tutorial">
+        </div>
+         
+        <div id="buttons"> 
+        <div class="circle_box" id="countDown">
+		<div>  
+			<svg id="svgCountDown">
+				<circle cx="40" cy="40" r="40" />
+			</svg>
+			<span id="hourglass"><i class="fas fa-hourglass-half"></i></span>
+		</div>
+	   </div>    
+            
+        <button id="valid" name="valid" class="validateButton">Valider <i id="skull" class="fas fa-skull"></i><i id="skullCrossbones" class="fas fa-skull-crossbones"></i></button>
+        <div class="circle_box">
+		<div>  
+			<svg id="svgProgressBar">
+				<circle cx="40" cy="40" r="40" />
+				<circle cx="40" cy="40" r="40" />
+			</svg>
+			<span id="counter"></span>
+		</div>
+	   </div>	
+       </div>
+        
+       <div id="completed">
+           <!--<button id="previous" class="navigationButton"><i class="fa fa-step-backward fa-4x"></i></button> -->
+           <div id="restart"><i class="fas fa-sync-alt fa-4x"></i></div> 
+           <button id="next" class="navigationButton"><i class="fas fa-step-forward fa-4x"></i></button> 
+      </div>  
+        
+         
+ 
+    </form>
+           <div id="history">
+          
+      </div>
+ 
+      
+
+  </div>
+      
+      <div class="containerMap"> 
+        <div class="header">
+          <div class="menulink menuleft" id="btnMaptoMenu"><i class="fas fa-bars"></i></div> 
+          <h1></h1>
+          <div class="menulink menuright" id="btnMaptoMain"><i class="fas fa-reply"></i></div>
+      </div>  
+          <div id="alertMap"><div id="crossAlertMap">✕</div>Appuyez sur Confirmer pour changer d'exercice. Pour revenir à l'exercice en cours, cliquez plutôt sur <i class="fas fa-reply"></i> Retour.  <br>
+          <button id="confirmSwitch" class="menubutton">Confirmer</button></div>
+          
+      
+          <div class="rowBtnMap">
+          <button id="priseEnMain" class="mapbutton hiddenBtnMap" disabled><i class="far fa-comment-dots"></i> \(\,| \) <i class="fas fa-graduation-cap"></i> </button>
+          </div>      
+          <div class="rowBtnMap">
+          <button id="simplifier" class="mapbutton hiddenBtnMap" disabled>\(\frac{2}{4}=\, ? \, |\) <i class="fas fa-random"></i></button>
+          </div>
+          
+          <div class="rowBtnMap">
+          <button id="plusTuto" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(+ \,|\) </span><span class="verticalBtnMap">\(+\)</span><hr class="hrBtnMap"><i class="fas fa-graduation-cap"></i></button>
+          <button id="minusTuto" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(- \,|\) </span><span class="verticalBtnMap">\(-\)</span><hr class="hrBtnMap"><i class="fas fa-graduation-cap"></i></button>
+          <button id="timesTuto" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\times \,|\) </span><span class="verticalBtnMap">\(\times\)</span><hr class="hrBtnMap"><i class="fas fa-graduation-cap"></i></button>
+          <button id="divideTuto" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\div \,|\) </span><span class="verticalBtnMap">\(\div\)</span><hr class="hrBtnMap"><i class="fas fa-graduation-cap"></i></button> 
+          </div>
+          
+        <div class="rowBtnMap">
+          <button id="plus" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(+ \,|\) </span><span class="verticalBtnMap">\(+\)</span><hr class="hrBtnMap"><i class="fas fa-random"></i></button>
+          <button id="minus" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(- \,|\) </span><span class="verticalBtnMap">\(-\)</span><hr class="hrBtnMap"><i class="fas fa-random"></i></button>
+          <button id="times" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\times \,|\) </span><span class="verticalBtnMap">\(\times\)</span><hr class="hrBtnMap"><i class="fas fa-random"></i></button>
+          <button id="divide" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\div \,|\) </span><span class="verticalBtnMap">\(\div\)</span><hr class="hrBtnMap"><i class="fas fa-random"></i></button> 
+          </div>
+        
+        <div class="rowBtnMap">
+          <button id="melange" class="mapbutton hiddenBtnMap" disabled>\(+ \, - \, \times \, \div\, |\) <i class="fas fa-random"></i></button>
+          </div>  
+          
+        <div class="rowBtnMap">
+          <button id="firstAttempt" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\ast \,|\) </span><span class="verticalBtnMap">\(\ast\)</span><hr class="hrBtnMap"><i class="fas fa-skull"></i> <i class="fas fa-random"></i></button>          
+        </div>
+          
+        <div class="rowBtnMap">
+          <button id="fiveInRow" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\ast \,|\) </span><span class="verticalBtnMap">\(\ast\)</span><hr class="hrBtnMap"><i class="fas fa-skull-crossbones"></i> <i class="fas fa-random"></i></button>          
+        </div>
+          
+        <div class="rowBtnMap">
+          <button id="withTimer" class="mapbutton hiddenBtnMap" disabled><span class="horizontalBtnMap">\(\ast \,|\) </span><span class="verticalBtnMap">\(\ast\)</span><hr class="hrBtnMap"><i class="fas fa-hourglass-half"></i> <i class="fas fa-random"></i></button>          
+        </div>
+        <svg id="svgMap">
+              
+        </svg>
+       
+
+    </div>
+      
+  <script src="script.js"></script>
+          
+  </body>
+</html>

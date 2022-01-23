@@ -1,0 +1,20 @@
+{
+    "name": "Fractions",
+    "short_name": "Fractions",
+    "start_url": "../fractions/index.html",
+    "icons": [
+        {
+            "src": "/~tauber/fractions/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/~tauber/fractions/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#306BAC",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}

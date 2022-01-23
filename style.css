@@ -1,0 +1,1021 @@
+/* --------- Fonts --------- */
+
+
+@font-face { /* Main text font */
+    font-family: 'candelabook';
+    src: url('fonts/candela/CandelaBook-webfont.eot');
+    src: url('fonts/candela/CandelaBook-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/candela/CandelaBook-webfont.woff') format('woff'),
+         url('fonts/candela/CandelaBook-webfont.ttf') format('truetype'),
+         url('fonts/candela/CandelaBook-webfont.svg#candelabook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {/* LateX font to write numbers outside Mathjax */
+    font-family: 'latin_modern_roman10_regular';
+    src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot');
+    src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/latin-modern-regular/lmroman10-regular-webfont.woff') format('woff'),
+         url('fonts/latin-modern-regular/lmroman10-regular-webfont.ttf') format('truetype'),
+         url('fonts/latin-modern-regular/lmroman10-regular-webfont.svg#latin_modern_roman10_regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face { /* Used for the "Fraction" logo */
+    font-family: 'alegreya_sansthin_italic';
+    src: url('fonts/alegreya-sans/alegreyasans-thinitalic-webfont.woff2') format('woff2'),
+         url('fonts/alegreya-sans/alegreyasans-thinitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/*!
+ * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.eot");
+  src: url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff2") format("woff2"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff") format("woff"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.ttf") format("truetype"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.svg#fontawesome") format("svg"); }
+
+@font-face {
+  font-family: 'Font Awesome 5 Free regular';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.eot");
+  src: url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff2") format("woff2"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff") format("woff"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.ttf") format("truetype"), url("fonts/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.svg#fontawesome") format("svg"); }
+
+.far {
+  font-family: 'Font Awesome 5 Free regular';
+  font-weight: 400; }
+
+.fa,
+.fas,
+.far,
+.fal,
+.fad,
+.fab {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1; }
+
+.fa,
+.fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900; }
+
+.fa-4x {
+  font-size: 4em; }
+
+.fa-graduation-cap:before {
+  content: "\f19d"; }
+
+.fa-comment-dots:before {
+  content: "\f4ad"; }
+
+.fa-random:before {
+  content: "\f074"; }
+
+.fa-skull:before {
+  content: "\f54c"; }
+
+.fa-skull-crossbones:before {
+  content: "\f714"; }
+
+.fa-hourglass-half:before {
+  content: "\f252"; }
+
+.fa-bars:before {
+  content: "\f0c9"; }
+
+.fa-project-diagram:before {
+  content: "\f542"; }
+
+.fa-reply:before {
+  content: "\f3e5"; }
+
+.fa-step-forward:before {
+  content: "\f051"; }
+
+.fa-sync-alt:before {
+  content: "\f2f1"; }
+
+
+/* --------- General Styles --------- */
+
+body {
+    margin:0;
+    height: 100vh;
+    /*overflow: hidden;*/
+}
+
+h1 {
+    flex:4;
+    margin: 0;
+    text-align: center;
+    font-weight: normal;
+    font-size:1.4em;
+    opacity:0;
+    transition:opacity 1s;
+}
+
+p {
+    font-size: 1.5rem; 
+    margin-top: 0;
+    /*transition: opacity 0.5s;*/
+}
+
+
+/* --------- Level container --------- */
+.container {
+    height: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #023047;
+    /*text-shadow: 1px 1px 0px lightgrey;*/
+    border: none; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    border-radius : 10px;
+    padding: 0px;
+    box-sizing: border-box;
+    display:none;
+    overflow: hidden;
+}
+
+.header {
+    font-family: "candelabook", Arial, sans-serif;
+    display:flex;
+    padding-top:10px;
+    margin-bottom:15px;
+    justify-content: space-between;
+    align-items: center;
+    position:sticky;
+    top:0;
+    left:0;
+    z-index:2;
+    background-color: white;
+}
+
+
+.fa-random {
+    font-size:0.9em;
+}
+
+.menulink {
+    font-size: 1.8em;
+    flex:1;
+    /*background-color: #306BAC;*/
+    color:#306BAC;
+    /*border-radius: 10px;*/
+    /*padding-bottom: 10px;
+    padding-top:10px;*/
+    /*box-shadow: 0 0 5px grey;*/
+    cursor: pointer;
+    user-select: none;
+    margin:0;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.menuleft {
+    text-align: left;
+}
+
+.menuright {
+    text-align: right;
+}
+
+.menulink:hover {
+    transform: scale(1.1);
+}
+
+.menulink:active {
+    transform: scale(1.05);
+}
+
+
+#current{
+    justify-content: center;
+    background-color: #CDE8F4;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #9BD0E9;
+    /*height: 6.5em;*/
+}
+
+#opacityWrapper {
+    transition: opacity ease 1s;
+    display:flex;
+    font-size: 1.8rem;
+    align-items: center;
+    justify-content: center;
+    opacity:0;
+    flex-wrap: wrap;
+}
+
+#question {
+    margin: 5px 0;
+    transition: opacity 0.5s;   
+}
+
+
+#allInputs {
+    display:flex;
+    flex-wrap:nowrap;
+    align-items: center;
+    margin: 5px 0;
+    margin-left: 10px;
+}
+
+
+#completedExercise{
+    display:none;
+    font-size: 1.2rem;
+    line-height: 5rem;
+    font-family: "candelabook", Arial, sans-serif;
+    margin: 5px 0;
+}
+
+
+#fraction {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width:auto;
+    margin-left: 5px;
+    /*margin-right: 30px;*/
+}
+
+
+.hrFraction {
+    width:0.8em;
+    border: 0.5px solid black;
+    margin-top:5px;
+    margin-bottom: 5px;
+}
+
+#partial {
+    color:#FB8500;
+    display:none;
+    margin: 5px 0;
+    margin-left: 5px;
+}
+
+.popDiv {
+    animation: pop ease 0.5s;
+}
+
+@keyframes pop {
+    0% {transform: scale(0);}
+    100% {transform: scale(1);}
+}
+
+#tutorial {
+    font-family: "candelabook", Arial, sans-serif;
+    /*font-family: "capsuularegular", Arial, sans-serif;*/
+    font-size:0.9em;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    /*padding-bottom: 10px;*/
+    height: 2.2em;
+}
+
+#buttons {
+    display:flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding:10px;
+    transition: opacity ease 0.5s;
+}
+
+#history {
+    text-align: center;
+    overflow: auto;
+    margin-top:15px;
+    margin-bottom: 10px;
+    height: 60%;
+}
+
+.validCheck {
+    color:#6CAE75;/*forestgreen;*/
+    margin-left:10px;    
+}
+
+.unvalidCheck {
+    margin-left:10px; 
+    font-size:0.8em;
+}
+
+
+#completed {
+    opacity:0;
+    transition: opacity ease 0.5s;
+    padding: 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height:85px; /*same height of the circle progressbar*/
+}
+
+.navigationButton {
+    font-size:1.1em;
+    border:none;
+    background: white;
+    padding:0;
+    color:#306BAC;
+    text-shadow: 0 0 3px grey;
+}
+
+.navigationButton:hover {
+    transform: scale(1.1);
+    cursor:pointer;
+}
+
+.navigatuonButton:active {
+    transform: scale(1.05);
+}
+
+#restart{
+    /*font-size:5rem;*/
+    color: #306BAC;
+    text-shadow: 0 0 3px grey;
+    /*margin-left: 50px;*/
+    margin-right: 100px;   
+}
+
+#restart:hover {
+    transform: scale(1.1) rotate(15deg);
+    cursor: pointer;
+}
+
+#restart:active {
+    transform: scale(1.05) rotate(15deg);
+    cursor: pointer;
+}
+
+
+
+
+.fade-in-text {
+  animation: fadeIn ease 1.5s;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+.fade-in-text2 {
+  animation: fadeIn ease 1.5s;
+}
+
+.shakeButton {
+    animation: shake ease 0.5s;
+}
+
+@keyframes shake {
+    10% {transform: translateX(10%);}
+    30% {transform: translateX(-10%);}
+    50% {transform: translateX(10%);}
+    70% {transform: translateX(-10%);} 
+    90% {transform: translateX(10%);}
+    100% {transform: translateX(0);}
+}
+
+
+
+input[type=number] {
+  -webkit-appearance: none;   /*  Remove default style for Safari on iPad and iPhones */
+  -moz-appearance: textfield; /*  Remove arrows for number input for Firefox*/
+}
+
+/* Remove arrows for number input for Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+label {/* Plus/Minus displayed as label for checkbox */
+    display:block;
+    width:30px;
+    height:30px;
+    margin-left: 10px;
+    /*line-height: 32px;*/
+    box-shadow: inset 2px 2px #123F54;
+    background-color: #9BD0E9;
+    text-align: center;
+    border-radius: 50%;
+    color:#023047;
+    font-size:63%;
+    font-family: "latin_modern_roman10_regular", serif;
+    font-weight: 900;
+    user-select: none;
+    transition: 0.3s;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  margin:0;
+  width: 0;
+}
+
+
+input[type="checkbox"] ~ label .minus, input[type="checkbox"]:checked ~ label .plus {
+        display:none;
+}
+
+input[type="checkbox"] ~ label .plus, input[type="checkbox"]:checked ~ label .minus {
+        display:block;
+}
+
+input[type="number"]{
+    background-color: #9BD0E9; /*#8ecae6; /*6#85C1E9;*/
+    border-radius: 10px;
+    border:none;
+    font-size:1.4rem;
+    /*line-height: 2rem;*/
+    box-shadow: inset 2px 2px #123F54;    
+    /*height:2.7rem;*/
+    width:2.5ch;
+    text-align: center;
+    color:#023047;
+    font-family: "latin_modern_roman10_regular", serif;
+    transition: 0.3s;
+}
+
+input[type="number"]:focus {
+    /*box-shadow: 0 0 0 1pt #023047;*/
+    outline: none;
+    /*transition: 0.5s;*/
+}
+
+
+.validateButton {
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-shadow: 0 0 5px grey;
+    user-select: none;
+    background: #306BAC;/* #DBAD6A;/*#6CAE75;  /*;#FE5F55;/*;/*#E86F4A;/*B8336A*/
+    border: none;
+    color: white;
+    font-family: "candelabook", Arial, sans-serif;
+    /*transition: background 0.5s;*/
+}
+
+.validateButton:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.validateButton:active {
+    transform: scale(1.05);
+    outline: none;
+}
+
+.validateButton:focus {
+    outline: none;
+}
+
+.validateButtonDisabled {
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.7em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right:80px;
+    font-family: "candelabook", Arial, sans-serif;
+    border: 1px solid #306BAC;
+    color: #306BAC;
+    background: white; 
+    box-shadow: none;
+}
+
+#skull, #skullCrossbones {
+    display:none;    
+}
+
+
+#svgProgressBar, #svgCountDown {
+	width: 80px;
+	height: 80px;	
+	transform: rotate(-90deg) scale(0.7);
+	overflow: initial;
+}
+
+circle{
+	stroke-width:8px;
+	fill:none;	
+}
+#svgProgressBar circle:nth-child(1){ 
+    stroke: #306BAC;   
+    stroke-width:10px;
+}
+#svgProgressBar circle:nth-child(2){
+	stroke: white;
+	position: relative;
+	z-index: 1;	
+}
+#svgProgressBar circle:nth-child(2){
+	/*stroke-dashoffset:calc(100 * 6);*/
+    stroke-dasharray:0, 500;
+    transition: stroke-dasharray 0.5s;
+	/*stroke-dasharray:calc(45*3.14*2/10 - 2), 2, calc(45*3.14*2/10 - 2),  500;*/
+	/*stroke-dashoffset:calc((42 * 6) - ((42 * 6) * 0) / 100);*/
+	/*stroke-position: inside;*/
+    /*stroke-linecap: round;*/
+}
+
+.circle_box{
+	font-size: 18px;
+	color: black;
+	text-align: center;
+}
+.circle_box div{
+	position: relative;
+}
+.circle_box span{
+	position: absolute;
+	left: 50%;
+	top:50%;
+	transform: translate(-50%,-60%);
+    color: #023047;
+}
+
+
+#counter {
+    font-size: 1.3rem;
+    opacity:0;
+    transition: opacity ease 0.5s;
+    font-family: "latin_modern_roman10_regular", serif;
+}
+
+#svgCountDown circle {
+    stroke: #306BAC;   
+}
+
+#hourglass {
+    font-size: 1.4rem;
+}
+
+#countDown {
+    display:none;
+}
+
+/* -------- Menu ------- */
+.containerMenu {
+    height: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 10px;
+    color: #023047;
+    /*text-shadow: 1px 1px 0px lightgrey;*/
+    border: none; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    border-radius : 10px;
+    padding: 0px;
+    box-sizing: border-box;
+    display:block;
+    overflow: auto;
+    scroll-behavior: smooth;
+}
+
+
+.title {
+    text-align: center;
+    font-family: "alegreya_sansthin_italic", sans-serif;
+    font-size:6rem;
+     line-height:40%;
+    margin-bottom: 70px;
+    margin-top: 60px;
+    color:#023047;
+    
+}
+
+#titleup {
+    line-height: 55%
+}
+
+#titlet {
+    font-size:4rem;
+    
+}
+
+
+.hrTitle {
+    padding: 0;
+    margin:0 auto;
+    margin-top: 10px;
+    width:150px;
+    border: 1px solid #023047;
+    align-self: center;
+}
+
+.menu {
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.menubutton {
+    background: #306BAC;
+    border: none;
+    color: white;
+    font-family: "candelabook", Arial, sans-serif;
+    margin:5px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.3em;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow: 0 0 5px grey;
+    user-select: none;
+    width: 20ch;
+    /*transition: background 0.5s;*/
+}
+
+.menubutton:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.menubutton:active {
+    transform: scale(1.05);
+    outline: none;
+}
+
+.menubutton:focus {
+    outline: none;
+}
+
+#start{
+    margin-bottom: 20px;
+}
+
+#about {
+    margin-top: 20px;
+}
+
+.menuTextBox {
+    font-family: "candelabook", Arial, sans-serif;
+    font-size:0.9em;
+    width: 240px;
+    margin: 50px auto;
+    color: #023047;
+    padding-bottom: 30px;
+}
+
+.hiddenTextBox {
+    display: none;
+}
+
+li {
+    line-height: 1.6em;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0 10px 0 30px;
+    margin: 10px auto;
+}
+.keyboard {
+    border: 1px solid #023047;
+    border-radius: 2px;
+    padding: 0 5px;
+    background-color: #CDE8F4;
+}
+
+#confirmErase {
+    width: 10ch;
+    margin: 10px 70px;
+}
+
+#erasingTerminated {
+    text-align: center;
+    color: #FB8500;
+    opacity:0;
+    transition: opacity ease 1s;
+}
+
+/* ----- Map Container ------ */
+
+#svgMap {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 97%;
+}
+
+.mapLine {
+    stroke-width: 2px;
+    stroke: #306BAC;
+}
+
+.containerMap {
+    height: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #023047;
+    /*text-shadow: 1px 1px 0px lightgrey;*/
+    border: none; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    border-radius : 10px;
+    padding: 0px;
+    box-sizing: border-box;
+    text-align: center;
+    display: none; 
+    overflow:auto;
+}
+
+
+
+.mapbutton {
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 5px 10px 5px 10px;
+    box-shadow: 0 0 5px grey;
+    user-select: none;
+    
+    background: white;/* #DBAD6A;/*#6CAE75;  /*;#FE5F55;/*;/*#E86F4A;/*B8336A*/
+    border: 1px solid #306BAC;
+    color: #306BAC;
+    font-family: "candelabook", Arial, sans-serif;
+    margin:5px;
+    transition: opacity ease 1.5s 0.5s, background ease 0.5s;
+}
+
+.mapbutton:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.mapbutton:active {
+    transform: scale(1.05);
+    outline: none;
+    border: 3px solid #FB8500; 
+}
+
+.mapbutton:focus {
+    outline: none;
+}
+
+.rowBtnMap {
+    display: flex;
+    justify-content: space-around;
+    margin:20px;
+}
+
+.hiddenBtnMap {
+    opacity:0.15;
+}
+
+.hiddenBtnMap:hover {
+    transform: none;
+    cursor:auto;
+}
+
+.hiddenBtnMap:active {
+    transform: none;
+    border:1px solid #306BAC;
+}
+
+.achievedBtnMap {
+    color:white;
+}
+
+
+.currentBtnMap {
+    animation: blink ease 2s infinite;   
+}
+
+@keyframes blink {
+    0% {border: 2px solid #FB8500; }
+    50% {border: 2px solid black; }
+    100% {border: 2px solid #FB8500; }
+}
+
+line {
+    stroke-dasharray: 0 500;
+    transition: stroke-dasharray ease 3s;
+    z-index:-1;
+}
+
+#alertMap {
+    font-family: "candelabook", Arial, sans-serif;
+    font-size:1.1em;
+    text-align: center;
+    position:absolute;
+    top:30%;
+    left:50%;
+    background: white;
+    border: 3px solid #306BAC; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    border-radius : 5px;
+    z-index: 3;
+    padding:20px;
+    width:260px;
+    height:160px;
+    margin-left:-153px;
+    transition: transform ease 1s;
+    display:none;
+}
+
+#crossAlertMap {
+    position: absolute;
+    top:-3px;
+    right:-3px;
+    color:#306BAC;
+    font-size:1.3em;
+    padding-right:5px;
+    padding-left:5px;
+    border: 3px solid #306BAC;
+    border-radius : 5px;
+    cursor: pointer;
+}
+
+#crossAlertMap:hover {
+    color:white;
+    background-color: #306BAC;
+}
+
+
+#confirmSwitch {
+    margin-top: 20px;
+    width: 10ch;
+}
+
+#btnMaptoMain {
+    display: none;
+    flex:1.5;
+}
+
+#btnMaptoMenu {flex:1.5;}
+
+.horizontalBtnMap {display: none;}
+
+.hrBtnMap {
+    width: 1em;
+    margin: 5px auto;
+    border:none;
+    border-top: 1px solid #306BAC;
+}
+
+.hrBtnMapAchieved {
+    border-top: 1px solid white;
+}
+
+@media screen and (min-width: 700px) {
+    .containerMap, .container, .containerMenu{
+        border: 3px solid #306BAC;
+        margin: 5px auto;
+    }
+    
+    body {height: 97vh;}
+}
+
+
+@media screen and (min-width: 530px) {
+    #btnMenu::after {content: ' Menu';}
+    
+    #btnCarte::after {content: ' Carte';}
+    
+    #btnMaptoMenu::after {content: ' Menu';}
+    
+    #btnMaptoMain::after {content: ' Retour';}
+    
+    h1 {
+        font-size: 1.8em;
+        flex: 2;
+    }
+    
+    #tutorial {font-size: 1.2em;}
+    
+    .validateButton {
+        font-size: 1.7em;
+    }
+    
+    #opacityWrapper {font-size: 2.3rem;}
+    
+    input[type="number"] {
+        font-size:1.9rem;
+        line-height: 2.4rem;
+        box-shadow: inset 3px 3px #123F54; 
+        width:3.5ch;
+    }
+    
+    label {
+        width:45px;
+        height:45px;
+        line-height: 40px;
+        box-shadow: inset 3px 3px #123F54;
+        margin-left: 15px;
+    }
+    
+    .hrFraction {
+        width:1.3em;
+        margin-top:10px;
+        margin-bottom: 10px;
+    }
+    
+    #partial {
+        margin: 10px 0;
+        margin-left: 10px;
+    }
+    
+    #question {
+        margin: 10px 0;
+    }
+    
+    p {font-size: 1.8rem; }
+    
+    #completedExercise {    
+        font-size: 1.5rem;
+        line-height: 6.5rem;
+        margin: 10px 0;
+    }
+    
+    .navigationButton {font-size:1.3em;}
+    
+    #counter {font-size: 1.6rem;}
+    
+    #hourglass {font-size: 1.7rem;}
+    
+    #svgProgressBar, #svgCountDown {transform: rotate(-90deg);}
+    
+    #current {    
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 10px 15px;
+    }
+    
+    #allInputs {
+        margin: 10px 0;
+        margin-left: 5px;
+    }
+    
+    
+    #fraction {
+        margin-left: 10px;
+    }
+    
+    .horizontalBtnMap {display: inline;}
+    
+    .verticalBtnMap {display: none;}
+    
+    .hrBtnMap {display:none;}
+    
+    .rowBtnMap {margin:25px;}
+    
+    .header {
+        padding-top:20px;
+        margin-bottom:20px;
+    }
+    
+    #buttons {
+        padding:20px;
+    }
+    
+    .menuTextBox {
+        font-size:1.2em;
+        width: 70%;
+        margin: 80px auto 40px auto;
+        padding:0;
+        text-align: center;   
+    }
+    
+    #confirmErase {
+        margin: 20px 0;
+        font-size: 1.2em;
+    }
+    
+    ul {
+        margin: 20px auto;
+        text-align: left;
+    }
+}
