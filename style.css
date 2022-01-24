@@ -80,7 +80,7 @@
   font-weight: 900; }
 
 .fa-4x {
-  font-size: 4em; }
+  font-size: 3.5em; }
 
 .fa-graduation-cap:before {
   content: "\f19d"; }
@@ -252,6 +252,17 @@ p {
     margin: 5px 0;
 }
 
+#completedSpeed {
+    display:none;
+    font-size: 1.1rem;
+    font-family: "candelabook", Arial, sans-serif;
+    margin: 10px 10px;
+}
+
+#speedRecord, #speedRecordNew {
+    color: #306BAC;
+}
+
 
 #fraction {
     display: flex;
@@ -328,10 +339,10 @@ p {
 #completed {
     opacity:0;
     transition: opacity ease 0.5s;
-    padding: 20px;
+    padding: 10px;
     display: none;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     height:85px; /*same height of the circle progressbar*/
 }
 
@@ -358,7 +369,7 @@ p {
     color: #306BAC;
     text-shadow: 0 0 3px grey;
     /*margin-left: 50px;*/
-    margin-right: 100px;   
+    /*margin-right: 100px; */  
 }
 
 #restart:hover {
@@ -956,13 +967,24 @@ line {
     
     p {font-size: 1.8rem; }
     
+    #completed {
+        padding: 20px;
+    }
+    
     #completedExercise {    
         font-size: 1.5rem;
         line-height: 6.5rem;
         margin: 10px 0;
     }
     
+    #completedSpeed {
+        font-size: 1.4rem;
+        margin: 18px 10px;
+    }
+    
     .navigationButton {font-size:1.3em;}
+    
+    #restart {font-size:1.2em;}
     
     #counter {font-size: 1.6rem;}
     
@@ -1020,4 +1042,6 @@ line {
         margin: 20px auto;
         text-align: left;
     }
+    
+    
 }

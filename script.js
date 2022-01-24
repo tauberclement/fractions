@@ -28,6 +28,9 @@ const divButtons = document.querySelector('#buttons');
 const divTimer = document.querySelector('#countDown');
 const circleTimer = document.querySelector('#svgCountDown circle'); 
 const hourGlass= document.querySelector('#hourglass');
+const divCompletedSpeed=document.querySelector('#completedSpeed');
+const spanSpeedRecord=document.querySelector('#speedRecord');
+const spanSpeedRecordNew=document.querySelector('#speedRecordNew');
 
 const skullBtn= document.querySelector('#skull');
 const skullCrossBtn= document.querySelector('#skullCrossbones');
@@ -271,7 +274,7 @@ let fiveInRow = new randomExercise(
 );
 
 let withTimer = new randomExercise(
-    13,'Vitesse','#withTimer',12,14,[12],5,'/',1.5,-7,7,false,true,60,listExercises
+    13,'Vitesse','#withTimer',12,14,[12],5,'/',1.5,-7,7,false,true,90,listExercises
 );
 /*let exercise1 = new fixedExercise(
     1,'Test',0, 1,
@@ -370,10 +373,19 @@ btn.addEventListener('click',function(event){
                         setTimeout(()=>{
                             divButtons.style.display='none';
                             opacityWrapper.style.display='none';
-                            divCompletedExercise.style.display='block';
+                            if(listExercises[idExercise].timer>0){
+                                spanSpeedRecord.textContent=totalTime;
+                                if(totalTime>10){totalTime-=10;}
+                                spanSpeedRecordNew.textContent=totalTime;
+                                localStorage.setItem('Countdown',totalTime);
+                                divCompletedSpeed.style.display='block';
+                            }
+                            else {
+                                divCompletedExercise.style.display='block';
+                            }                         
                             divCompleted.style.display='flex';
                             setTimeout(()=>{divCompleted.style.opacity=1;},300);
-                            },500);
+                        },500);
                         nextLink.style.visibility="visible";
                         //if (idExercise>0) {previousLink.style.visibility="visible";}           
                         //else {previousLink.style.visibility="hidden";}  
@@ -469,6 +481,7 @@ btnRestart.addEventListener('click',function(event){
         event.preventDefault();
         divCompletedExercise.style.display='none';
         divCompleted.style.opacity=0;
+        divCompletedSpeed.style.display='none';
         setTimeout(()=>{
             divCompleted.style.display='none';
             divButtons.style.display='flex';
@@ -666,6 +679,10 @@ function initializeExercise(id){
     if (listExercises[id].timer>0){
         divTimer.style.display='block';
         divButtons.style.justifyContent='space-around';
+        if (localStorage.getItem('Countdown')!==null){
+            totalTime=Number(localStorage.getItem('Countdown'));
+        }
+        else {totalTime=listExercises[id].timer;}
     }
     else {
         divTimer.style.display='none';
@@ -706,6 +723,7 @@ function resetExerciseContainer() {
    divButtons.style.opacity=1;
    opacityWrapper.style.opacity=0;
    divCompleted.style.display='none';
+   divCompletedSpeed.style.display='none';
    counter.textContent='';
 }
 
@@ -1157,14 +1175,15 @@ function arcCircle(x){
    circleTimer.style.strokeDasharray=x*perim/100 + ' 500';
 }
 
+let totalTime; //Countdown time in seconds
+
 function countDown(timestamp){
     if (!startTime) {
       startTime = timestamp;
     }
 
     currentTime = timestamp - startTime;
-    totalTime=60000;
-    percent=100-currentTime/totalTime*100;
+    percent=100-currentTime/(totalTime*1000)*100;
     
     if (Math.round(percent)===25){
         circleTimer.style.stroke='#FB8500';
