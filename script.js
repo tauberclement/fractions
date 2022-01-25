@@ -574,7 +574,7 @@ function loadExercise(j){
     h1Title.textContent=currentExercise.title;
     if (currentExercise.constructor===randomExercise){
         let icon=document.createElement('i');
-        icon.classList.add('fa', 'fa-random');
+        icon.classList.add('fas', 'fa-random');
         h1Title.textContent += ' ';
         h1Title.appendChild(icon);
     }
