@@ -31,6 +31,12 @@ const hourGlass= document.querySelector('#hourglass');
 const divCompletedSpeed=document.querySelector('#completedSpeed');
 const spanSpeedRecord=document.querySelector('#speedRecord');
 const spanSpeedRecordNew=document.querySelector('#speedRecordNew');
+const divAlertMain=document.querySelector('#alertMain');
+const spanSpeedRecordAlert=document.querySelector('#speedRecordAlert');
+const spanActualSpeedAlert=document.querySelector('#actualSpeedAlert');
+const btnMoreTime=document.querySelector('#moreTime');
+const btnNoMoreTime=document.querySelector('#noMoreTime');
+
 
 const skullBtn= document.querySelector('#skull');
 const skullCrossBtn= document.querySelector('#skullCrossbones');
@@ -158,7 +164,7 @@ function getRandomQuestion(min,max,depth,type){
         let mainOp=getRandomOperator();
         let frac1=getRandomQuestion(min,max,1,getRandomOperator());
         let frac2=getRandomQuestion(min,max,1,getRandomOperator());
-        if (mainOp==='/' && math.evaluate(frac2)===0) {frac2=getRandomQuestion(min,max,1,getRandomOperator());}
+        if (mainOp==='/' && math.evaluate(frac2)===0) {return getRandomQuestion(min,max,2,'/');}
         return '(' +frac1+ ')' + mainOp + '(' + frac2 +  ')';
     }
     else if (depth===1.5){
@@ -341,16 +347,13 @@ btn.addEventListener('click',function(event){
    }
     
    let answer=math.fraction(math.evaluate(exercise[i]));
-    
-    if (listExercises[idExercise].timer>0){
-        startTime=null;
-        cancelAnimationFrame(rAF);
-    }
+
     
    if (checkAnswer(exercise,i,answer)===1) {
        btn.disabled=true;
        btn.style.backgroundColor='#6CAE75';
        raiseInput();
+       cancelAnimationFrame(rAF);
        setTimeout(()=>{
             i++;
             //updateProgressBar();
@@ -374,9 +377,10 @@ btn.addEventListener('click',function(event){
                             divButtons.style.display='none';
                             opacityWrapper.style.display='none';
                             if(listExercises[idExercise].timer>0){
-                                spanSpeedRecord.textContent=totalTime;
-                                if(totalTime>10){totalTime-=10;}
-                                spanSpeedRecordNew.textContent=totalTime;
+                                spanSpeedRecord.textContent=printTime(totalTime);
+                                localStorage.setItem('Countdown Record',totalTime);
+                                lowerTimer();
+                                spanSpeedRecordNew.textContent=printTime(totalTime);
                                 localStorage.setItem('Countdown',totalTime);
                                 divCompletedSpeed.style.display='block';
                             }
@@ -412,9 +416,10 @@ btn.addEventListener('click',function(event){
        MathJax.typeset(document.querySelectorAll('#partial'))
        setTimeout(()=> {divPartial.classList.remove('popDiv');},1000);
    }    
-   else {
+   else {//The anwser is wrong
        btn.style.backgroundColor='red'
        btn.classList.add('shakeButton');
+       cancelAnimationFrame(rAF);
        setTimeout(()=> {btn.classList.remove('shakeButton');},1000);  
 
        if (listExercises[idExercise].oneAttempt===true) {
@@ -432,7 +437,7 @@ btn.addEventListener('click',function(event){
                },1000);
        }
        
-       if (listExercises[idExercise].fiveInRow===true) {
+       else if (listExercises[idExercise].fiveInRow===true) {
             raiseInput();
             if (i>0) {circleAround.style.stroke='red';}
             setTimeout(()=>{opacityWrapper.style.opacity=0;},500);
@@ -440,6 +445,20 @@ btn.addEventListener('click',function(event){
                 initializeExercise(idExercise);
                 MathJax.typeset(document.querySelectorAll('#question')); 
                 },1500);
+       }
+       
+       if (listExercises[idExercise].timer>0 && almostNoTime===true) {
+           if (localStorage.getItem('Countdown Record')===null){
+               increaseTimer();
+               localStorage.setItem('Countdown',totalTime);
+           }
+           else {
+               attemptsWithTimer +=1;
+               if (attemptsWithTimer===5) {
+               attemptsWithTimer=0;
+               openAlertMain();       
+               }                 
+           }
        }
    }
        
@@ -614,6 +633,8 @@ function showQuestion(exercise,i){
     if (listExercises[idExercise].timer>0){
         circleTimer.style.stroke='';
         hourGlass.style.color='';
+        almostNoTime=false;
+        startTime=null;
         rAF=requestAnimationFrame(countDown);
     }
     return question;
@@ -687,7 +708,6 @@ function initializeExercise(id){
     else {
         divTimer.style.display='none';
         divButtons.style.justifyContent='';
-        startTime=null;
         cancelAnimationFrame(rAF);
     }
     //Decorating Validate Button
@@ -1176,6 +1196,34 @@ function arcCircle(x){
 }
 
 let totalTime; //Countdown time in seconds
+let almostNoTime=false; //Detects when answering with less than 25% of the time
+let attemptsWithTimer=0; //Counts the failed attempts due to lack of time
+
+function lowerTimer(){
+    if (totalTime>180) {totalTime-=30;}
+    else if (totalTime>120 && totalTime<=180) {totalTime-=20;}
+    else if (totalTime>60 && totalTime<=120) {totalTime-=10;}
+    else if (totalTime>10 && totalTime<=60) {totalTime-=5;}
+    console.log('Total Time = ' + totalTime);
+}
+
+function increaseTimer(){
+    if (totalTime<60) {totalTime+=5;}
+    else if (totalTime<120 && totalTime>=60) {totalTime+=10;}
+    else if (totalTime<270 && totalTime>=120) {totalTime+=30;}
+    else if (totalTime>=270) {totalTime=300;}
+    console.log('Total Time = ' + totalTime);
+    // we do not increase the timer above 5 minutes.
+}
+
+function printTime(time){
+    let timeString='';
+    let minutes=Math.floor(time/60);
+    let seconds=time%60;
+    if (minutes>0) {timeString=timeString+ minutes + '\'';}
+    if (seconds>0) {timeString=timeString+ seconds + '"';}
+    return timeString;
+}
 
 function countDown(timestamp){
     if (!startTime) {
@@ -1185,9 +1233,10 @@ function countDown(timestamp){
     currentTime = timestamp - startTime;
     percent=100-currentTime/(totalTime*1000)*100;
     
-    if (Math.round(percent)===25){
+    if (Math.round(percent)<=25){
         circleTimer.style.stroke='#FB8500';
         hourGlass.style.color='#FB8500';
+        almostNoTime=true;
     }
     
     arcCircle(percent);
@@ -1203,3 +1252,24 @@ function countDown(timestamp){
     }
 }
 
+function openAlertMain(){
+    divAlertMain.classList.add('popDiv');
+    divAlertMain.style.display='block';
+    spanSpeedRecordAlert.textContent=printTime(Number(localStorage.getItem('Countdown Record')));
+    spanActualSpeedAlert.textContent=printTime(totalTime);
+}
+
+function closeAlertMain(){
+    divAlertMain.classList.remove('popDiv');
+    divAlertMain.style.display='none';
+    startTime=null;
+}
+
+btnNoMoreTime.addEventListener('click',closeAlertMain);
+
+btnMoreTime.addEventListener('click',function(e){
+    e.preventDefault();
+    increaseTimer();
+    localStorage.setItem('Countdown',totalTime);
+    closeAlertMain();
+});

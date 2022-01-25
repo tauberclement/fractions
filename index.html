@@ -25,7 +25,7 @@
       
     <!--<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>   -->   
     <!--<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>  -->
-    <script src="libraries/mathjax/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <script src="libraries/mathjax/tex-chtml.js" id="MathJax-script" async></script>
   </head>
   
   <body>
@@ -57,6 +57,11 @@
       
       
       <div class="container">
+          
+        <div id="alertMain">Votre record est de <span id="speedRecordAlert"></span> par question. Actuellement, vous disposez de <span id="actualSpeedAlert"></span> par question. Voulez vous plus de temps ?<br>
+        <button id="moreTime" class="menubutton">Oui</button> <button id="noMoreTime" class="menubutton">Non</button>
+        </div>  
+          
       <div class="header">
           <div class="menulink menuleft" id="btnMenu"><i class="fas fa-bars"></i></div> 
           <h1></h1>
@@ -94,7 +99,7 @@
         </div> 
           </div>
           <div id="completedExercise">Exercice terminé !</div>
-          <div id="completedSpeed">Impressionnant ! <br>Record actuel : <span id="speedRecord"></span>' par question. <br> Prochaine tentative : <span id="speedRecordNew"></span>' par question. </div>
+          <div id="completedSpeed">Impressionnant ! <br>Record actuel : <span id="speedRecord"></span> par question. <br> Prochaine tentative : <span id="speedRecordNew"></span> par question. </div>
          </div>
          
         <div id="tutorial">

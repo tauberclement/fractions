@@ -840,7 +840,7 @@ line {
     z-index:-1;
 }
 
-#alertMap {
+#alertMap, #alertMain {
     font-family: "candelabook", Arial, sans-serif;
     font-size:1.1em;
     text-align: center;
@@ -857,6 +857,10 @@ line {
     margin-left:-153px;
     transition: transform ease 1s;
     display:none;
+}
+
+#alertMain {
+    top:10%;
 }
 
 #crossAlertMap {
@@ -881,6 +885,15 @@ line {
 #confirmSwitch {
     margin-top: 20px;
     width: 10ch;
+}
+
+#moreTime, #noMoreTime {
+    margin: 20px;
+    width: 4ch;
+}
+
+#actualSpeedAlert, #speedRecordAlert {
+    color: #306BAC;
 }
 
 #btnMaptoMain {
