@@ -285,6 +285,10 @@ p {
     margin-bottom: 5px;
 }
 
+.hrLong {
+    width:3.5em;
+}
+
 #partial {
     color:#FB8500;
     display:none;
@@ -416,7 +420,7 @@ p {
 
 
 
-input[type=number] {
+input[type="number"], input[type="text"] {
   -webkit-appearance: none;   /*  Remove default style for Safari on iPad and iPhones */
   -moz-appearance: textfield; /*  Remove arrows for number input for Firefox*/
 }
@@ -464,7 +468,7 @@ input[type="checkbox"] ~ label .plus, input[type="checkbox"]:checked ~ label .mi
         display:block;
 }
 
-input[type="number"]{
+input[type="number"], input[type="text"]{
     background-color: #9BD0E9; /*#8ecae6; /*6#85C1E9;*/
     border-radius: 10px;
     border:none;
@@ -472,17 +476,21 @@ input[type="number"]{
     /*line-height: 2rem;*/
     box-shadow: inset 2px 2px #123F54;    
     /*height:2.7rem;*/
-    width:2.5ch;
+    width:3ch;
     text-align: center;
     color:#023047;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: 'latin_modern_roman10_regular', serif;
     transition: 0.3s;
 }
 
-input[type="number"]:focus {
+input[type="number"]:focus, input[type="text"]{
     /*box-shadow: 0 0 0 1pt #023047;*/
     outline: none;
     /*transition: 0.5s;*/
+}
+
+input[type="text"]{
+    width: 10ch;
 }
 
 
@@ -951,12 +959,18 @@ line {
     
     #opacityWrapper {font-size: 2.3rem;}
     
-    input[type="number"] {
+    input[type="number"], input[type="text"]{
         font-size:1.9rem;
         line-height: 2.4rem;
         box-shadow: inset 3px 3px #123F54; 
         width:3.5ch;
     }
+    
+    input[type="text"]{
+        width: 10.5ch;
+    }
+    
+
     
     label {
         width:45px;
@@ -970,6 +984,10 @@ line {
         width:1.3em;
         margin-top:10px;
         margin-bottom: 10px;
+    }
+    
+    .hrLong {
+        width: 4em;
     }
     
     #partial {

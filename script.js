@@ -7,6 +7,7 @@ const numInput=document.querySelector('#num');
 const denInput=document.querySelector('#den');
 const signInput=document.querySelector('#sign');
 const labelSign=document.querySelector('label');
+const hrFraction=document.querySelector('.hrFraction')
 const divQuestion=document.querySelector('#current')
 const opacityWrapper=document.querySelector('#opacityWrapper');
 const divPartial=document.querySelector('#partial')
@@ -67,7 +68,7 @@ class fixedExercise {
 }
 
 class tutorialExercise {
-    constructor(id,title,idButton,previous,next,parents,questions,messages,list){
+    constructor(id,title,idButton,previous,next,parents,questions,messages,xvariable,list){
         this.id=id;
         this.title=title;
         this.idButton=idButton;
@@ -76,6 +77,7 @@ class tutorialExercise {
         this.parents=parents;
         this.questions=questions;
         this.messages=messages;
+        this.xvariable=xvariable;
         this.status=0;
         list.push(this);
     }
@@ -198,6 +200,7 @@ let introduction = new tutorialExercise(
     'Dans le cas où le résultat est nul, le signe et le dénominateurs sont arbitraires.',
     'Enfin, lorsqu\'une fraction est déjà sous sa forme irréductible, il suffit de proposer la même fraction comme solution.',
     'Félicitations ! Vous savez tout ce qu\'il faut pour continuer. A vous de jouer maintenant...'],
+    false,
     listExercises
 );
 
@@ -281,6 +284,16 @@ let fiveInRow = new randomExercise(
 
 let withTimer = new randomExercise(
     13,'Vitesse','#withTimer',12,14,[12],5,'/',1.5,-7,7,false,true,90,listExercises
+);
+
+let xvariableIntro = new tutorialExercise(
+    14,'Fractions rationnelles','#xvar',13, 15,[10],
+    ['(x/2 + 1/2)',
+    '(x+1)/3 + (2x-3)/2'],
+    ['Pour cette série d\'éxercices, \\( x\\) est une variable réelle.',
+    'Bravo !'],
+    true,
+    listExercises
 );
 /*let exercise1 = new fixedExercise(
     1,'Test',0, 1,
@@ -510,6 +523,8 @@ btnRestart.addEventListener('click',function(event){
         MathJax.typeset(document.querySelectorAll('#question'));        
 });
 
+let powerUpdated=false;
+
 numInput.addEventListener('keydown',function(e){
     if (e.key === 'ArrowUp'){
         e.preventDefault();
@@ -518,9 +533,24 @@ numInput.addEventListener('keydown',function(e){
         e.preventDefault();
         denInput.focus();
     }
-    });
+});
 
-                          
+function unicodeDigit(i){
+    if (i==='2' || i==='3') {return String.fromCharCode('0xB'+i);}
+    else if (i==='1') {return '\u00B9';}
+    else {return String.fromCharCode('0x207'+i);}
+}
+
+numInput.addEventListener('compositionend', (event) => {
+    if (numInput.getAttribute('type')==='text'){
+        if (event.data[0]==='^' && isFinite(event.data[1])){
+            event.preventDefault();
+            numInput.value=numInput.value.slice(0,numInput.selectionStart-2) + unicodeDigit(event.data[1]) + numInput.value.slice(numInput.selectionStart);
+        }
+    }
+});
+
+                     
 
 denInput.addEventListener('keydown',function(e){
     if (e.key === 'ArrowUp'){        
@@ -538,13 +568,15 @@ denInput.addEventListener('focus',function(){
     });
 
 window.addEventListener('keydown',function(e){
-    if (e.key==='+'){
-        e.preventDefault();
-        signInput.checked=false;
-    }
-    else if (e.key==='-'){
-        e.preventDefault();
-        signInput.checked=true;
+    if (listExercises[idExercise]!==undefined && listExercises[idExercise].xvariable!==true){
+        if (e.key==='+'){
+            e.preventDefault();
+            signInput.checked=false;
+        }
+        else if (e.key==='-'){
+            e.preventDefault();
+            signInput.checked=true;
+        }
     }
 });
 
@@ -629,7 +661,8 @@ function showQuestion(exercise,i){
     counter.textContent=(i+1)+'/'+exerciseLenght; //  '\\( \\frac{'+ i +'}{'+ exerciseLenght + '}\\)'; 
     spanQuestion.textContent='\\(' + question + '\\)'; 
     if(i!=0){updateProgressBar();} 
-    divTutorial.textContent=messages[i]; 
+    divTutorial.textContent=messages[i];
+    MathJax.typeset([divTutorial]);
     if (listExercises[idExercise].timer>0){
         circleTimer.style.stroke='';
         hourGlass.style.color='';
@@ -722,6 +755,18 @@ function initializeExercise(id){
     else {
         skullBtn.style.display='none';
         skullCrossBtn.style.display='none';
+    }
+    if (listExercises[id].xvariable===true){
+        labelSign.style.display='none'; 
+        hrFraction.classList.add('hrLong');
+        numInput.setAttribute('type','text');
+        denInput.setAttribute('type','text');
+    }
+    else {
+        labelSign.style.display=''; 
+        hrFraction.classList.remove('hrLong');
+        numInput.setAttribute('type','number');
+        denInput.setAttribute('type','number');
     }
     exercise=loadExercise(id);
     unfinishedExercise=true;
@@ -983,6 +1028,7 @@ buttonGraph.addBtnNode('#melange',10,['#plus','#minus','#times','#divide']);
 buttonGraph.addBtnNode('#firstAttempt',11,['#melange']);
 buttonGraph.addBtnNode('#fiveInRow',12,['#firstAttempt']);
 buttonGraph.addBtnNode('#withTimer',13,['#fiveInRow']);
+buttonGraph.addBtnNode('#xvar',14,['#melange']);
 
 
 
