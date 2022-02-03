@@ -46,7 +46,7 @@ const divMenu=document.querySelector('.containerMenu');
 
 // ---- Defining Exercises objects and methods to generate random questions ------
 class fixedExercise {
-    constructor(id,title,idButton,previous,next,parents,questions,list){
+    constructor(id,title,idButton,previous,next,parents,questions,xvariable,list){
         this.id=id;
         this.title=title;
         this.idButton=idButton;
@@ -55,6 +55,7 @@ class fixedExercise {
         this.parents=parents;
         this.questions=questions;
         this.status=0;
+        this.xvariable=xvariable;
         list.push(this);
     }
     
@@ -92,7 +93,7 @@ class tutorialExercise {
 }
 
 class randomExercise {
-    constructor(id,title,idButton,previous,next,parents,size,type,depth,min,max,oneAttempt,fiveInRow,timer,list){
+    constructor(id,title,idButton,previous,next,parents,size,type,depth,min,max,oneAttempt,fiveInRow,timer,xvariable,list){
         this.id=id;
         this.title=title;
         this.idButton=idButton;
@@ -108,6 +109,7 @@ class randomExercise {
         this.oneAttempt=oneAttempt;
         this.fiveInRow=fiveInRow;
         this.timer=timer;
+        this.xvariable=xvariable;
         list.push(this);
     }
     
@@ -154,6 +156,15 @@ function getRandomOperator(){
     return ['+','-','*','/'][getRandomInt(0,3,false)];
 }
 
+function getRandomPolynomial(min,max,zeroNotAllowed){
+    let a=getRandomInt(min,max,false);
+    return [a,getRandomInt(min,max,a===0 && zeroNotAllowed)];
+}
+
+function getRandomRationalFraction(min,max){
+    return [getRandomPolynomial(min,max,false),getRandomPolynomial(min,max,true)];
+}
+
 
 function getRandomQuestion(min,max,depth,type){
     if (depth===0) {return getRandomFraction(min,max,false,false);}
@@ -164,10 +175,18 @@ function getRandomQuestion(min,max,depth,type){
     }
     else if (depth===2){
         let mainOp=getRandomOperator();
-        let frac1=getRandomQuestion(min,max,1,getRandomOperator());
-        let frac2=getRandomQuestion(min,max,1,getRandomOperator());
-        if (mainOp==='/' && math.evaluate(frac2)===0) {return getRandomQuestion(min,max,2,'/');}
-        return '(' +frac1+ ')' + mainOp + '(' + frac2 +  ')';
+        if (type==='xvar'){
+            return [mainOp,getRandomRationalFraction(min,max),getRandomRationalFraction(min,max)];
+        }
+        else {
+            let frac1=getRandomQuestion(min,max,1,getRandomOperator());
+            let frac2=getRandomQuestion(min,max,1,getRandomOperator());
+            if (mainOp==='/' && math.evaluate(frac2)===0) {return getRandomQuestion(min,max,2,'/');}
+            
+            return '(' +frac1+ ')' + mainOp + '(' + frac2 +  ')';
+        }
+        
+        
     }
     else if (depth===1.5){
         let randomDepth=getRandomInt(0,2,false);
@@ -205,7 +224,7 @@ let introduction = new tutorialExercise(
 );
 
 let simplify= new randomExercise(
-    1,'Simplifier','#simplifier',0,2,[0],5,'+',0,-20,20,false,false,0,listExercises
+    1,'Simplifier','#simplifier',0,2,[0],5,'+',0,-20,20,false,false,0,false,listExercises
 );
 
 let additiontuto = new fixedExercise(
@@ -217,11 +236,12 @@ let additiontuto = new fixedExercise(
     '2/3+1/9',
     '1/2+1/3',
     '5/4+2/3'],
+    false,
     listExercises
 );
 
 let additions = new randomExercise(
-    3,'Additions','#plus',2,4,[2],5,'+',1,0,10,false,false,0,listExercises
+    3,'Additions','#plus',2,4,[2],5,'+',1,0,10,false,false,0,false,listExercises
 );
 
 let soustractiontuto = new fixedExercise(
@@ -231,11 +251,12 @@ let soustractiontuto = new fixedExercise(
     '1/2-2/3',
      '- 1/4+1/6',
     '-1/5 - 1/2'],
+    false,
     listExercises
 );
 
 let soustractions = new randomExercise(
-    5,'Soustractions','#minus',4,6,[4],5,'-',1,-10,10,false,false,0,listExercises
+    5,'Soustractions','#minus',4,6,[4],5,'-',1,-10,10,false,false,0,false,listExercises
 );
 
 let multiplicationtuto = new fixedExercise(
@@ -247,11 +268,12 @@ let multiplicationtuto = new fixedExercise(
     '2/7*(-1/3)',
     '4/(-3)*(5/2)',
     '(-3)/2*(3/-2)'],
+    false,
     listExercises
 );
 
 let multiplications= new randomExercise(
-    7,'Multiplications','#times',6,8,[6],5,'*',1,-10,10,false,false,0,listExercises
+    7,'Multiplications','#times',6,8,[6],5,'*',1,-10,10,false,false,0,false,listExercises
 );
 
 let divisiontuto = new fixedExercise(
@@ -263,38 +285,54 @@ let divisiontuto = new fixedExercise(
     '(4/5)/(7/3)',
     '(3/2)/(5/4)',
     '(2/9)/(-3/4)'],
+    false,
     listExercises
 );
 
 let divisions = new randomExercise(
-    9,'Divisions','#divide',8,10,[8],5,'/',1,-10,10,false,false,0,listExercises
+    9,'Divisions','#divide',8,10,[8],5,'/',1,-10,10,false,false,0,false,listExercises
 );
 
 let combinaisons = new randomExercise(
-    10,'Mélange','#melange',9,11,[3,5,7,9],5,'/',2,-5,5,false,false,0,listExercises
+    10,'Mélange','#melange',9,11,[3,5,7,9],5,'/',2,-5,5,false,false,0,false,listExercises
 );
 
 let firstAttempt = new randomExercise(
-    11,'Du premier coup','#firstAttempt',10,12,[10],5,'/',1.5,-7,7,true,false,0,listExercises
+    11,'Du premier coup','#firstAttempt',10,12,[10],5,'/',1.5,-7,7,true,false,0,false,listExercises
 );
 
 let fiveInRow = new randomExercise(
-    12,'Cinq à la suite','#fiveInRow',11,13,[11],5,'/',1.5,-7,7,false,true,0,listExercises
+    12,'Cinq à la suite','#fiveInRow',11,13,[11],5,'/',1.5,-7,7,false,true,0,false,listExercises
 );
 
 let withTimer = new randomExercise(
-    13,'Vitesse','#withTimer',12,14,[12],5,'/',1.5,-7,7,false,true,90,listExercises
+    13,'Vitesse','#withTimer',12,14,[12],5,'/',1.5,-7,7,false,true,90,false,listExercises
 );
 
 let xvariableIntro = new tutorialExercise(
     14,'Fractions rationnelles','#xvar',13, 15,[10],
     ['(x/2 + 1/2)',
-    '(x+1)/3 + (2x-3)/2'],
-    ['Pour cette série d\'éxercices, \\( x\\) est une variable réelle.',
-    'Bravo !'],
+    '(3x-2)/(x+1) + (-x+3)/(x+1)',
+     '1 + 1/(2x)',
+    'x/(x+1)-1/(x-1)',
+    '5/((2x+1)(x+3))+1/(x+3)',
+    '((x+1)/(x-1))*(2x/(x-2))',
+    '(3x/(x+2))/((x+1)/(x+2))'],
+    ['Pour cette série d\'exercices, \\( x \\) est une variable réelle.',
+    '',
+    '',
+    'Pour écrire \\(x^2, x^3,\\ldots\\) appuyez sur ^ puis 2,3,... Les formes factorisées ou développées sont toutes les deux acceptées.',
+    '',
+    '',
+    ''],
     true,
     listExercises
 );
+
+let xvarPractice = new randomExercise(
+    15,'Entrainement','#xvarPractice',14,16,[14],5,'xvar',2,-5,5,false,false,0,true,listExercises
+);
+
 /*let exercise1 = new fixedExercise(
     1,'Test',0, 1,
     ['1/2-3/5',
@@ -359,8 +397,15 @@ btn.addEventListener('click',function(event){
        return false;
    }
     
-   let answer=math.fraction(math.evaluate(exercise[i]));
-
+    
+   let answer;
+    if (listExercises[idExercise].xvariable===true){
+        answer=solveRationalQuestions(math.parse(exercise[i]));
+    }
+    else {
+        answer=math.fraction(math.evaluate(exercise[i]));
+    }
+   
     
    if (checkAnswer(exercise,i,answer)===1) {
        btn.disabled=true;
@@ -562,6 +607,16 @@ denInput.addEventListener('keydown',function(e){
     }
     });
 
+denInput.addEventListener('compositionend', (event) => {
+    if (denInput.getAttribute('type')==='text'){
+        if (event.data[0]==='^' && isFinite(event.data[1])){
+            event.preventDefault();
+            denInput.value=denInput.value.slice(0,denInput.selectionStart-2) + unicodeDigit(event.data[1]) + denInput.value.slice(denInput.selectionStart);
+        }
+    }
+});
+
+
 
 denInput.addEventListener('focus',function(){
     denInput.style.backgroundColor='#8ecae6';
@@ -688,20 +743,33 @@ function checkLongQuestion(tree){
 
 function checkAnswer(exercice,i,answer){
     if (autovalid===true) {return 1;}
-    let num=Number(numInput.value);
-    let den=Number(denInput.value);
-    let sign=1;
-    if (signInput.checked) {sign=-1;}
     
-    if (answer.n===0 && num===0){return 1;}        
-    else if(sign===answer.s && num===answer.n && den===answer.d){return 1;}
-    else if(math.fraction(sign*num,den)-answer===0){return 2;}
-    else {return 0;}
+    if (listExercises[idExercise].xvariable===true){
+        let num=numInput.value;
+        let den=denInput.value;
+        let guess=math.rationalize('('+num+')/(' + den +')');         
+        if (guess.equals(answer)) {return 1;}
+        else {return 0;}
+    }
+    
+    else {
+        let num=Number(numInput.value);
+        let den=Number(denInput.value);
+        let sign=1;
+        if (signInput.checked) {sign=-1;}
+        if (answer.n===0 && num===0){return 1;}        
+        else if(sign===answer.s && num===answer.n && den===answer.d){return 1;}
+        else if(math.fraction(sign*num,den)-answer===0){return 2;}
+        else {return 0;}
+    }
 }
 
 function updateHistory(question,answer,correct){
     let p = document.createElement('p');
-    p.textContent= '\\(' + question + ' = ' + printFraction(answer) + '\\)';
+    let frac;
+    if (listExercises[idExercise].xvariable===true) {frac=printFraction(answer,true) ;}
+    else {frac=printFraction(answer,false);}
+    p.textContent= '\\(' + question + ' = ' + frac + '\\)';
     let validCheck=document.createElement('span');
     if (correct===true){        
         validCheck.className='validCheck';
@@ -792,21 +860,27 @@ function resetExerciseContainer() {
    counter.textContent='';
 }
 
-function printFraction(fraction) {
+function printFraction(fraction,xvar) {
     let result='';
-    if (fraction.n===0) {
-        result='0';
-    }
-    else {
-        if (fraction.s===-1){
-            result='-';
-        }
-        if (fraction.d===1){
-            result=result + fraction.n
+    if (xvar===false){
+        if (fraction.n===0) {
+            result='0';
         }
         else {
-            result = result + '\\frac\{'+ fraction.n +'\}\{'+ fraction.d + '\}';
+            if (fraction.s===-1){
+                result='-';
+            }
+            if (fraction.d===1){
+                result=result + fraction.n
+            }
+            else {
+                result = result + '\\frac\{'+ fraction.n +'\}\{'+ fraction.d + '\}';
+            }
         }
+    }
+    
+    else {
+        result=math.parse(fraction).toTex({parenthesis:'auto',implicit:'hide'});
     }
    
     return result;
@@ -858,6 +932,162 @@ function updateProgressBar(){
       return dashArray;
 }
 
+function printRationalFraction(ratFrac){
+    let poly1=new Polynomial(ratFrac[0]);
+    let poly2=new Polynomial(ratFrac[1]);
+    return '('+ poly1.toString() +')/('+  poly2.toString() +')';
+}
+
+function factorPolynom(poly){
+    let g=math.gcd(poly[0],poly[1])
+    if (poly[1]>0 || (poly[1]===0 && poly[0]>0)) {return [g,[poly[0]/g,poly[1]/g]];}
+    else {return [-g,[-poly[0]/g,-poly[1]/g]];}
+}
+
+function auxUndefined(i){
+    if (i===undefined){return 0;}
+    else {return i;}
+}
+
+function simplifyRationalFraction(ratFrac){
+    let poly1f=factorPolynom(ratFrac[0]);
+    let poly2f=factorPolynom(ratFrac[1]);
+    if (poly1f[1][0]===poly2f[1][0]&&poly1f[1][1]===poly2f[1][1]){return [math.fraction(poly1f[0],poly2f[0]),[1,0],[1,0]];}
+    else {return [math.fraction(poly1f[0],poly2f[0]),poly1f[1],poly2f[1]];}
+}
+
+function coeffToString(coeff){
+    if (coeff===1){return '';}
+    else if (coeff===-1) {return '-';}
+    else {return coeff.toString();}
+}
+
+function addRationalFractions(ratFrac1,ratFrac2){
+    let rFrac1=simplifyRationalFraction(ratFrac1);
+    let rFrac2=simplifyRationalFraction(ratFrac2);
+    let frac1=rFrac1[0];
+    let frac2=rFrac2[0];
+    let num1=new Polynomial(rFrac1[1]);
+    let num2=new Polynomial(rFrac2[1]);
+    let den0;
+    let den1=new Polynomial(rFrac1[2]);
+    let den2;
+    let newNum;
+    let newNumString;
+    let newDen;
+    // Case where one fraction is zero
+    
+    // Case where the two denominators are equals
+    if (rFrac1[2][0]===rFrac2[2][0] && rFrac1[2][1]===rFrac2[2][1]){
+        let part1=num1.mul(frac1.s*frac1.n*frac2.d)
+        let part2=num2.mul(frac2.s*frac2.n*frac1.d)
+        newNum=part1.add(part2);
+        den0=frac1.d;
+        rFrac2[2]=[1,0];
+        den2=new Polynomial('1');
+    }
+    // General case
+    else {
+        den0=frac1.d*frac2.d;
+        den2=new Polynomial(rFrac2[2]);
+        let part1=num1.mul(den2).mul(frac1.s*frac1.n*frac2.d);
+        let part2=num2.mul(den1).mul(frac2.s*frac2.n*frac1.d);
+        newNum=part1.add(part2);
+    }
+    let x0=auxUndefined(newNum.coeff[0]);
+    let x1=auxUndefined(newNum.coeff[1]);
+    let x2=auxUndefined(newNum.coeff[2]);
+    let g=math.gcd(x0,x1,x2);
+    
+    //Last simplification if the numerator terms have a common factor.
+    if (g>1){
+        newNum=newNum.mul(1/g);
+        let f=math.fraction(g/den0);
+        if (newNum.toString()!=='1'){newNumString=coeffToString(f.n)+ '('+newNum.toString() + ')';}
+        else {newNumString=coeffToString(f.n);}
+        den0=f.d;
+    }
+    else {
+        newNumString=newNum.toString();
+    }
+    
+    // Cheking if there are monomials in the denominator to write its expression in a compact form.
+    if (rFrac1[2][0]*rFrac1[2][1]===0 && rFrac2[2][0]*rFrac2[2][1]===0) {newDen=den1.mul(den2).mul(den0).toString();}
+    else if (rFrac1[2][0]*rFrac1[2][1]===0) {newDen=coeffToString(den1.mul(den0)) + '(' + den2.toString() +')';}
+    else if (rFrac2[2][0]*rFrac2[2][1]===0) {newDen=coeffToString(den2.mul(den0)) + '(' + den1.toString() +')';}
+    else {newDen=coeffToString(den0) + '(' + den1.toString() + ')(' + den2.toString() + ')';}
+    
+    return '(' + newNumString + ')/(' + newDen + ')';
+}
+
+function solveRationalQuestions(nodeQuestion) {            
+    let term1=math.simplify(nodeQuestion.args[0]);
+    let term2=math.simplify(nodeQuestion.args[1]);
+    
+    if (nodeQuestion.op==='+' || nodeQuestion.op==='-'){
+        let stringOp='add';
+        if (nodeQuestion.op==='-') {stringOp='subtract';}
+        
+        if (term1.op==='/' && term2.op==='/'){
+            num1=term1.args[0];
+            den1=term1.args[1];
+            num2=term2.args[0];
+            den2=term2.args[1];
+            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[new math.OperatorNode('*','multiply',[num1,den2],true),new math.OperatorNode('*','multiply',[num2,den1])]));
+            let newden=new math.OperatorNode('*','multiply',[den1,den2]);
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,newden])).toString();
+        }
+        else if (term1.op==='/'){
+            num1=term1.args[0];
+            den1=term1.args[1];
+            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[num1,new math.OperatorNode('*','multiply',[term2,den1],true)]));
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,den1])).toString();        
+        }
+
+        else if (term2.op==='/'){
+            num2=nodeQuestion.args[1].args[0];
+            den2=nodeQuestion.args[1].args[1];
+            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[new math.OperatorNode('*','multiply',[term1,den2],true),num2]));
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,den2])).toString();        
+        }
+
+        else {
+            return math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[term1,term2])).toString();
+        }
+    }
+    
+    else if (nodeQuestion.op==='*'){
+        if (nodeQuestion.args[0].content.op==='/' && nodeQuestion.args[1].content.op==='/'){
+            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[0],nodeQuestion.args[1].content.args[0]],true);
+            let newden=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[1],nodeQuestion.args[1].content.args[1]],true);
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,newden])).toString();
+        }
+        else if (nodeQuestion.args[0].content.op==='/'){
+            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[0],nodeQuestion.args[1]],true);
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,nodeQuestion.args[0].content.args[1]])).toString();        
+        }
+
+        else if (nodeQuestion.args[1].content.op==='/'){
+            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0],nodeQuestion.args[1].content.args[0]],true);
+            return math.simplify(new math.OperatorNode('/','divide',[newnum,nodeQuestion.args[1].content.args[1]])).toString();        
+        }
+
+        else {
+            return nodeQuestion.toString();
+        }        
+    }
+    
+    else if (nodeQuestion.op==='/'){
+        if (nodeQuestion.args[1].content.op==='/'){
+            let inverse=new math.OperatorNode('/','divide',[nodeQuestion.args[1].content.args[1],nodeQuestion.args[1].content.args[0]]);
+            return solveRationalQuestions(new math.OperatorNode('*','multiply',[nodeQuestion.args[0],new math.ParenthesisNode(inverse)],true));
+        }
+        else {
+            return solveRationalQuestions(new math.OperatorNode('*','multiply',[nodeQuestion.args[0],new math.ParenthesisNode(new math.OperatorNode('/','divide',[math.parse('1'),nodeQuestion.args[1]]))],true))
+        }
+    }
+}
+
 //make the sign buttun flip like a coin
 
 /* This function is not used becaused it is in conflicts with parenthesis... instead I have replaced \cdot by \times directly in the source code of Math.js
@@ -877,7 +1107,7 @@ function showSolutions(exercise) {
         let displayQuestion=questionBis.toTex({parenthesis:'auto'});
         let answer=math.fraction(math.evaluate(exercise[i]));
         let p = document.createElement('p');
-        p.textContent='\\(' + displayQuestion + ' = ' + printFraction(answer) + '\\)';
+        p.textContent='\\(' + displayQuestion + ' = ' + printFraction(answer,false) + '\\)';
         solutions.appendChild(p);
     }  
 }
@@ -1029,7 +1259,7 @@ buttonGraph.addBtnNode('#firstAttempt',11,['#melange']);
 buttonGraph.addBtnNode('#fiveInRow',12,['#firstAttempt']);
 buttonGraph.addBtnNode('#withTimer',13,['#fiveInRow']);
 buttonGraph.addBtnNode('#xvar',14,['#melange']);
-
+buttonGraph.addBtnNode('#xvarPractice',15,['#xvar']);
 
 
 function connectElements(btn1,btn2,resize) {
