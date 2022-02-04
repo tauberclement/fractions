@@ -956,6 +956,11 @@ function simplifyRationalFraction(ratFrac){
     else {return [math.fraction(poly1f[0],poly2f[0]),poly1f[1],poly2f[1]];}
 }
 
+function polyToString(poly){
+    if (poly.degree()===0 && poly.lc()===1){return '';}
+    else {return poly.toString();}
+}
+
 function coeffToString(coeff){
     if (coeff===1){return '';}
     else if (coeff===-1) {return '-';}
@@ -1003,8 +1008,8 @@ function addRationalFractions(ratFrac1,ratFrac2){
     if (g>1){
         newNum=newNum.mul(1/g);
         let f=math.fraction(g/den0);
-        if (newNum.toString()!=='1'){newNumString=coeffToString(f.n)+ '('+newNum.toString() + ')';}
-        else {newNumString=coeffToString(f.n);}
+        if (newNum.degree()!==0){newNumString=coeffToString(f.n)+ '('+newNum.toString() + ')';}
+        else {newNumString=polyToString(newNum.mul(f.n));}
         den0=f.d;
     }
     else {
@@ -1013,8 +1018,8 @@ function addRationalFractions(ratFrac1,ratFrac2){
     
     // Cheking if there are monomials in the denominator to write its expression in a compact form.
     if (rFrac1[2][0]*rFrac1[2][1]===0 && rFrac2[2][0]*rFrac2[2][1]===0) {newDen=den1.mul(den2).mul(den0).toString();}
-    else if (rFrac1[2][0]*rFrac1[2][1]===0) {newDen=coeffToString(den1.mul(den0)) + '(' + den2.toString() +')';}
-    else if (rFrac2[2][0]*rFrac2[2][1]===0) {newDen=coeffToString(den2.mul(den0)) + '(' + den1.toString() +')';}
+    else if (rFrac1[2][0]*rFrac1[2][1]===0) {newDen=polyToString(den1.mul(den0)) + '(' + den2.toString() +')';}
+    else if (rFrac2[2][0]*rFrac2[2][1]===0) {newDen=polyToString(den2.mul(den0)) + '(' + den1.toString() +')';}
     else {newDen=coeffToString(den0) + '(' + den1.toString() + ')(' + den2.toString() + ')';}
     
     return '(' + newNumString + ')/(' + newDen + ')';
