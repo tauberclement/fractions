@@ -940,7 +940,8 @@ function printRationalFraction(ratFrac){
 
 function factorPolynom(poly){
     let g=math.gcd(poly[0],poly[1])
-    if (poly[1]>0 || (poly[1]===0 && poly[0]>0)) {return [g,[poly[0]/g,poly[1]/g]];}
+    if (g===0) {return [0,[poly[0],poly[1]]];}
+    else if (poly[1]>0 || (poly[1]===0 && poly[0]>0)) {return [g,[poly[0]/g,poly[1]/g]];}
     else {return [-g,[-poly[0]/g,-poly[1]/g]];}
 }
 
@@ -967,6 +968,14 @@ function coeffToString(coeff){
     else {return coeff.toString();}
 }
 
+function polySize(poly){
+    let size=0;
+    for (let i=0;i<3;i++){
+        if (isFinite(poly.coeff[i])) {size=size+1;}
+    }
+    return size;
+}
+
 function addRationalFractions(ratFrac1,ratFrac2){
     let rFrac1=simplifyRationalFraction(ratFrac1);
     let rFrac2=simplifyRationalFraction(ratFrac2);
@@ -979,15 +988,32 @@ function addRationalFractions(ratFrac1,ratFrac2){
     let den2;
     let newNum;
     let newNumString;
-    let newDen;
-    // Case where one fraction is zero
     
-    // Case where the two denominators are equals
-    if (rFrac1[2][0]===rFrac2[2][0] && rFrac1[2][1]===rFrac2[2][1]){
-        let part1=num1.mul(frac1.s*frac1.n*frac2.d)
-        let part2=num2.mul(frac2.s*frac2.n*frac1.d)
-        newNum=part1.add(part2);
+    // Case where one fraction is zero
+    if (rFrac1[1][0]===0 && rFrac1[1][1]===0) {
+        newNum=num2.mul(frac2.s*frac2.n);
+        den1=new Polynomial('1');
+        rFrac1[2]=[1,0];
+        den2=new Polynomial(rFrac2[2]);
+        den0=frac2.d;
+    }
+    else if (rFrac2[1][0]===0 && rFrac2[1][1]===0) {
+        newNum=num1.mul(frac1.s*frac1.n);
+        den2=new Polynomial('1');
+        rFrac2[2]=[1,0];
         den0=frac1.d;
+    }
+    // Case where the two denominators are equals
+    else if (rFrac1[2][0]===rFrac2[2][0] && rFrac1[2][1]===rFrac2[2][1]){
+        let part1=num1.mul(frac1.s*frac1.n);
+        let part2=num2.mul(frac2.s*frac2.n);
+        den0=frac1.d;
+        if (frac1.d!==frac2.d){
+            part1=part1.mul(frac2.d);
+            part2=part2.mul(frac1.d);
+            den0=den0*frac2.d;
+        }
+        newNum=part1.add(part2);
         rFrac2[2]=[1,0];
         den2=new Polynomial('1');
     }
@@ -999,31 +1025,82 @@ function addRationalFractions(ratFrac1,ratFrac2){
         let part2=num2.mul(den1).mul(frac2.s*frac2.n*frac1.d);
         newNum=part1.add(part2);
     }
+    
+    //Last simplification if the numerator terms have a common factor.
     let x0=auxUndefined(newNum.coeff[0]);
     let x1=auxUndefined(newNum.coeff[1]);
     let x2=auxUndefined(newNum.coeff[2]);
     let g=math.gcd(x0,x1,x2);
     
-    //Last simplification if the numerator terms have a common factor.
-    if (g>1){
+    if (x0<=0 && x1<=0 && x2<=0){g=-g;}
+    
+    if (g!==1 && polySize(newNum)>1){
         newNum=newNum.mul(1/g);
         let f=math.fraction(g/den0);
-        if (newNum.degree()!==0){newNumString=coeffToString(f.n)+ '('+newNum.toString() + ')';}
-        else {newNumString=polyToString(newNum.mul(f.n));}
+        if (newNum.degree()!==0){
+            if (newNum.add(den1.neg()).toString()==='0'){
+                newNumString=coeffToString(f.n*f.s);
+                rFrac1[2]=[1,0];
+                den1=new Polynomial('1');
+            }
+            else{newNumString=coeffToString(f.n*f.s)+ '('+newNum.toString() + ')';}    
+        }
+        else {newNumString=polyToString(newNum.mul(f.n*f.s));}
         den0=f.d;
     }
     else {
         newNumString=newNum.toString();
     }
     
-    // Cheking if there are monomials in the denominator to write its expression in a compact form.
-    if (rFrac1[2][0]*rFrac1[2][1]===0 && rFrac2[2][0]*rFrac2[2][1]===0) {newDen=den1.mul(den2).mul(den0).toString();}
-    else if (rFrac1[2][0]*rFrac1[2][1]===0) {newDen=polyToString(den1.mul(den0)) + '(' + den2.toString() +')';}
-    else if (rFrac2[2][0]*rFrac2[2][1]===0) {newDen=polyToString(den2.mul(den0)) + '(' + den1.toString() +')';}
-    else {newDen=coeffToString(den0) + '(' + den1.toString() + ')(' + den2.toString() + ')';}
+    let newDenString=printProduct(den0,den1,den2,rFrac1[2],rFrac2[2]);
     
-    return '(' + newNumString + ')/(' + newDen + ')';
+    return '(' + newNumString + ')/(' + newDenString + ')';
 }
+
+// Cheking if there are monomials in a product den0*den1*den2 to print its expression in a compact form.
+function printProduct(den0,den1,den2,poly1,poly2){
+    if (poly1[0]*poly1[1]===0 && poly2[0]*poly2[1]===0) {return den1.mul(den2).mul(den0).toString();}
+    else if (poly1[0]*poly1[1]===0) {return polyToString(den1.mul(den0)) + '(' + den2.toString() +')';}
+    else if (poly2[0]*poly2[1]===0) {return polyToString(den2.mul(den0)) + '(' + den1.toString() +')';}
+    else if (poly1[0]===poly2[0] && poly1[1]===poly2[1]) {return coeffToString(den0) + '('+den1.toString()+ ')^2';} // That one is useful only for multiplications and divisions
+    else {return coeffToString(den0) + '(' + den1.toString() + ')(' + den2.toString() + ')';}
+}
+
+function subtractRationalFraction(ratFrac1,ratFrac2){
+    return addRationalFractions(ratFrac1,[[-ratFrac2[0][0],-ratFrac2[0][1]],ratFrac2[1]]);
+}
+
+function multiplyRationalFraction(ratFrac1,ratFrac2){
+    let rFrac1=simplifyRationalFraction(ratFrac1);
+    let rFrac2=simplifyRationalFraction(ratFrac2);
+
+    if ((rFrac1[1][0]===0 && rFrac1[1][1]===0) || (rFrac2[1][0]===0 && rFrac2[1][1]===0)){
+        return '0';
+    }
+    else {
+        if (rFrac1[1][0]===rFrac2[2][0] && rFrac1[1][1]===rFrac2[2][1]){
+            rFrac1[1]=[1,0];
+            rFrac2[2]=[1,0];
+        }
+        if (rFrac1[2][0]===rFrac2[1][0] && rFrac1[2][1]===rFrac2[1][1]){
+            rFrac1[2]=[1,0];
+            rFrac2[1]=[1,0];
+        }
+        let prodFrac=math.fraction(rFrac1[0]*rFrac2[0]);
+        let num1=new Polynomial(rFrac1[1]);
+        let num2=new Polynomial(rFrac2[1]);
+        let den1=new Polynomial(rFrac1[2]);
+        let den2=new Polynomial(rFrac2[2]);
+        let newNumString=printProduct(prodFrac.n*prodFrac.s,num1,num2,rFrac1[1],rFrac2[1]);
+        let newDenString=printProduct(prodFrac.d,den1,den2,rFrac1[2],rFrac2[2]);
+        return '(' + newNumString + ')/(' + newDenString + ')';
+    }
+}
+
+function divideRationalFraction(ratFrac1,ratFrac2){
+    return multiplyRationalFraction(ratFrac1,[ratFrac2[1],ratFrac2[0]]);
+}
+
 
 function solveRationalQuestions(nodeQuestion) {            
     let term1=math.simplify(nodeQuestion.args[0]);
