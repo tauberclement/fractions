@@ -400,7 +400,7 @@ btn.addEventListener('click',function(event){
     
    let answer;
     if (listExercises[idExercise].xvariable===true){
-        answer=solveRationalQuestions(math.parse(exercise[i]));
+        answer=solveRationalQuestions(exercise[i]);
     }
     else {
         answer=math.fraction(math.evaluate(exercise[i]));
@@ -698,8 +698,14 @@ function showQuestion(exercise,i){
     }
     divPartial.textContent = '';
     divPartial.style.display='none';
-    let questionTree=math.parse(exercise[i]);
-    let question;
+    let questionTree;
+    
+    if (listExercises[idExercise].xvariable===true){
+        questionTree = math.parse('(' + printRationalFraction(exercise[i][1]) + ')' + exercise[i][0] + '('+ printRationalFraction(exercise[i][2])+ ')');
+    }
+    else {
+        questionTree=math.parse(exercise[i]);        
+    }
     /*let operator=questionTree.op;
     if (checkLongQuestion(questionTree)){            
         let one = questionTree.args[0];
@@ -712,7 +718,8 @@ function showQuestion(exercise,i){
         }
     else {        
     }*/
-    question=questionTree.toTex({parenthesis: 'auto'});   
+       
+    let question=questionTree.toTex({parenthesis: 'auto'});
     counter.textContent=(i+1)+'/'+exerciseLenght; //  '\\( \\frac{'+ i +'}{'+ exerciseLenght + '}\\)'; 
     spanQuestion.textContent='\\(' + question + '\\)'; 
     if(i!=0){updateProgressBar();} 
@@ -767,7 +774,11 @@ function checkAnswer(exercice,i,answer){
 function updateHistory(question,answer,correct){
     let p = document.createElement('p');
     let frac;
-    if (listExercises[idExercise].xvariable===true) {frac=printFraction(answer,true) ;}
+    if (listExercises[idExercise].xvariable===true) {
+        answerTree=math.parse(answer);
+        answerTree=answerTree.transform(correctNode);
+        frac=answerTree.toTex({parenthesis:'auto'});
+    }
     else {frac=printFraction(answer,false);}
     p.textContent= '\\(' + question + ' = ' + frac + '\\)';
     let validCheck=document.createElement('span');
@@ -785,6 +796,21 @@ function updateHistory(question,answer,correct){
     //p.scrollIntoView();
 }
 
+//For rational fracions, the expressions x(x-a) ar interpreted as a function x of the variable x-a. This functions corrects the problem
+function correctNode(node,path,parent){
+    if (node.type==='FunctionNode'){
+        return new math.OperatorNode('*','multiply',[new math.SymbolNode('x'),node.args[0]],true);
+    }
+    else {return node;}
+}
+
+// Remove the space in implicit multiplication
+function customImplicit(node,options){
+    if (node.op==='*' && node.implicit===true && node.args[1].type==='SymbolNode'){
+        return node.args[0].toTex(options) + node.args[1].toTex(options);
+    }
+}
+
 function clearHistory(){
     while (divHistory.firstChild) {
           divHistory.removeChild(divHistory.lastChild);
@@ -795,6 +821,7 @@ function clearHistory(){
 }
 
 function initializeExercise(id){
+    console.log('Initializing exercise ' + id);
     clearHistory();
     MathJax.typesetClear(divMain);
     // Dealing with countdown
@@ -959,6 +986,7 @@ function simplifyRationalFraction(ratFrac){
 
 function polyToString(poly){
     if (poly.degree()===0 && poly.lc()===1){return '';}
+    else if (poly.degree()===0 && poly.lc()===-1){return '-';}
     else {return poly.toString();}
 }
 
@@ -1102,72 +1130,14 @@ function divideRationalFraction(ratFrac1,ratFrac2){
 }
 
 
-function solveRationalQuestions(nodeQuestion) {            
-    let term1=math.simplify(nodeQuestion.args[0]);
-    let term2=math.simplify(nodeQuestion.args[1]);
-    
-    if (nodeQuestion.op==='+' || nodeQuestion.op==='-'){
-        let stringOp='add';
-        if (nodeQuestion.op==='-') {stringOp='subtract';}
-        
-        if (term1.op==='/' && term2.op==='/'){
-            num1=term1.args[0];
-            den1=term1.args[1];
-            num2=term2.args[0];
-            den2=term2.args[1];
-            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[new math.OperatorNode('*','multiply',[num1,den2],true),new math.OperatorNode('*','multiply',[num2,den1])]));
-            let newden=new math.OperatorNode('*','multiply',[den1,den2]);
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,newden])).toString();
-        }
-        else if (term1.op==='/'){
-            num1=term1.args[0];
-            den1=term1.args[1];
-            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[num1,new math.OperatorNode('*','multiply',[term2,den1],true)]));
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,den1])).toString();        
-        }
-
-        else if (term2.op==='/'){
-            num2=nodeQuestion.args[1].args[0];
-            den2=nodeQuestion.args[1].args[1];
-            let newnum=math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[new math.OperatorNode('*','multiply',[term1,den2],true),num2]));
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,den2])).toString();        
-        }
-
-        else {
-            return math.rationalize(new math.OperatorNode(nodeQuestion.op,stringOp,[term1,term2])).toString();
-        }
-    }
-    
-    else if (nodeQuestion.op==='*'){
-        if (nodeQuestion.args[0].content.op==='/' && nodeQuestion.args[1].content.op==='/'){
-            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[0],nodeQuestion.args[1].content.args[0]],true);
-            let newden=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[1],nodeQuestion.args[1].content.args[1]],true);
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,newden])).toString();
-        }
-        else if (nodeQuestion.args[0].content.op==='/'){
-            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0].content.args[0],nodeQuestion.args[1]],true);
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,nodeQuestion.args[0].content.args[1]])).toString();        
-        }
-
-        else if (nodeQuestion.args[1].content.op==='/'){
-            let newnum=new math.OperatorNode('*','multiply',[nodeQuestion.args[0],nodeQuestion.args[1].content.args[0]],true);
-            return math.simplify(new math.OperatorNode('/','divide',[newnum,nodeQuestion.args[1].content.args[1]])).toString();        
-        }
-
-        else {
-            return nodeQuestion.toString();
-        }        
-    }
-    
-    else if (nodeQuestion.op==='/'){
-        if (nodeQuestion.args[1].content.op==='/'){
-            let inverse=new math.OperatorNode('/','divide',[nodeQuestion.args[1].content.args[1],nodeQuestion.args[1].content.args[0]]);
-            return solveRationalQuestions(new math.OperatorNode('*','multiply',[nodeQuestion.args[0],new math.ParenthesisNode(inverse)],true));
-        }
-        else {
-            return solveRationalQuestions(new math.OperatorNode('*','multiply',[nodeQuestion.args[0],new math.ParenthesisNode(new math.OperatorNode('/','divide',[math.parse('1'),nodeQuestion.args[1]]))],true))
-        }
-    }
+function solveRationalQuestions(rationalQuestion) {
+    let op=rationalQuestion[0];
+    let ratFrac1=rationalQuestion[1];
+    let ratFrac2=rationalQuestion[2];
+    if (op==='+'){return addRationalFractions(ratFrac1,ratFrac2);}
+    else if (op==='-'){return addRationalFractions(ratFrac1,[[-ratFrac2[0][0],-ratFrac2[0][1]],ratFrac2[1]]);}
+    else if (op==='*'){return multiplyRationalFraction(ratFrac1,ratFrac2);}
+    else if (op==='/'){return multiplyRationalFraction(ratFrac1,[ratFrac2[1],ratFrac2[0]]);}
 }
 
 //make the sign buttun flip like a coin
@@ -1450,7 +1420,7 @@ function updateMap() {
             }
         }
         
-        if (node.idExo===idExercise) {btnbis.classList.add('currentBtnMap');}
+        if (node.idExo===idExercise) {btnbis.classList.add('currentBtnMap'); } //btnbis.scrollIntoView(false);
 
     }
     if (updated===false) {connectAll();}
@@ -1487,7 +1457,7 @@ function openAlertMap(idExercise){
         //window.removeEventListener('resize',connectAll)
         initializeExercise(idExercise)
         MathJax.typeset(document.querySelectorAll('#question'));   
-    });
+    },{once:true});
 }
 
 /* ----- Local data storage ------- */
