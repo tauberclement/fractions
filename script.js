@@ -311,13 +311,13 @@ let withTimer = new randomExercise(
 
 let xvariableIntro = new tutorialExercise(
     14,'Fractions rationnelles','#xvar',13, 15,[10],
-    ['(x/2 + 1/2)',
-    '(3x-2)/(x+1) + (-x+3)/(x+1)',
-     '1 + 1/(2x)',
-    'x/(x+1)-1/(x-1)',
-    '5/((2x+1)(x+3))+1/(x+3)',
-    '((x+1)/(x-1))*(2x/(x-2))',
-    '(3x/(x+2))/((x+1)/(x+2))'],
+    [['+', [[0,1],[2,0]], [[1,0],[2,0]] ],      //'(x/2 + 1/2)',
+     ['+', [[-2,3],[1,1]], [[3,-1],[1,1]] ],    //'(3x-2)/(x+1) + (-x+3)/(x+1)',
+     ['+', [[1,0],[1,0]], [[1,0],[0,2]] ],      //'1 + 1/(2x)',
+     ['-', [[0,1],[1,1]], [[1,0],[-1,1]] ],     //'x/(x+1)-1/(x-1)',
+     ['+', [[2,0],[3,3]], [[0,1],[1,1]] ],      //'x/(2x+1)+3/(x+3)',
+     ['*', [[1,1],[-1,1]], [[0,2],[-2,1]] ],    //'((x+1)/(x-1))*(2x/(x-2))',
+     ['/', [[0,3],[2,1]], [[1,1],[4,2]] ]],     //'(3x/(x+2))/((x+1)/(x+2))'],*/
     ['Pour cette série d\'exercices, \\( x \\) est une variable réelle.',
     '',
     '',
@@ -586,6 +586,7 @@ function unicodeDigit(i){
     else {return String.fromCharCode('0x207'+i);}
 }
 
+
 numInput.addEventListener('compositionend', (event) => {
     if (numInput.getAttribute('type')==='text'){
         if (event.data[0]==='^' && isFinite(event.data[1])){
@@ -752,10 +753,9 @@ function checkAnswer(exercice,i,answer){
     if (autovalid===true) {return 1;}
     
     if (listExercises[idExercise].xvariable===true){
-        let num=numInput.value;
-        let den=denInput.value;
-        let guess=math.rationalize('('+num+')/(' + den +')');         
-        if (guess.equals(answer)) {return 1;}
+        let num=math.parse(exponentToHat(numInput.value)).transform(correctNode);
+        let den=math.parse(exponentToHat(denInput.value)).transform(correctNode);
+        if (math.rationalize(num).toString()===math.rationalize(answer[0]).toString() && math.rationalize(den).toString()===math.rationalize(answer[1]).toString()) {return 1;}
         else {return 0;}
     }
     
@@ -771,12 +771,22 @@ function checkAnswer(exercice,i,answer){
     }
 }
 
+function exponentToHat(str){
+    for (let i=0; i<10;i++){
+        if (i===2 || i===3) {str=str.replace(String.fromCharCode('0xB'+i),'^'+i);}
+        else if (i===1) {str=str.replace('\u00B9','');}
+        else if (i===0) {str=str.replace('x\u2070','1');}
+        else {str=str.replace(String.fromCharCode('0x207'+i),'^'+i);}
+    }
+    return str;
+}
+
 function updateHistory(question,answer,correct){
     let p = document.createElement('p');
     let frac;
     if (listExercises[idExercise].xvariable===true) {
-        answerTree=math.parse(answer);
-        answerTree=answerTree.transform(correctNode);
+        answerTree=new math.OperatorNode('/','divide',[answer[0],answer[1]]);
+        //answerTree=answerTree.transform(correctNode);
         frac=answerTree.toTex({parenthesis:'auto'});
     }
     else {frac=printFraction(answer,false);}
@@ -821,7 +831,6 @@ function clearHistory(){
 }
 
 function initializeExercise(id){
-    console.log('Initializing exercise ' + id);
     clearHistory();
     MathJax.typesetClear(divMain);
     // Dealing with countdown
@@ -962,7 +971,8 @@ function updateProgressBar(){
 function printRationalFraction(ratFrac){
     let poly1=new Polynomial(ratFrac[0]);
     let poly2=new Polynomial(ratFrac[1]);
-    return '('+ poly1.toString() +')/('+  poly2.toString() +')';
+    if (poly2.degree()===0 && poly2.lc()===1) {return '1';}
+    else {return '('+ poly1.toString() +')/('+  poly2.toString() +')';}
 }
 
 function factorPolynom(poly){
@@ -1082,7 +1092,7 @@ function addRationalFractions(ratFrac1,ratFrac2){
     
     let newDenString=printProduct(den0,den1,den2,rFrac1[2],rFrac2[2]);
     
-    return '(' + newNumString + ')/(' + newDenString + ')';
+    return [math.parse(newNumString).transform(correctNode),math.parse(newDenString).transform(correctNode)];
 }
 
 // Cheking if there are monomials in a product den0*den1*den2 to print its expression in a compact form.
@@ -1094,9 +1104,9 @@ function printProduct(den0,den1,den2,poly1,poly2){
     else {return coeffToString(den0) + '(' + den1.toString() + ')(' + den2.toString() + ')';}
 }
 
-function subtractRationalFraction(ratFrac1,ratFrac2){
+/*function subtractRationalFraction(ratFrac1,ratFrac2){
     return addRationalFractions(ratFrac1,[[-ratFrac2[0][0],-ratFrac2[0][1]],ratFrac2[1]]);
-}
+}*/
 
 function multiplyRationalFraction(ratFrac1,ratFrac2){
     let rFrac1=simplifyRationalFraction(ratFrac1);
@@ -1121,13 +1131,14 @@ function multiplyRationalFraction(ratFrac1,ratFrac2){
         let den2=new Polynomial(rFrac2[2]);
         let newNumString=printProduct(prodFrac.n*prodFrac.s,num1,num2,rFrac1[1],rFrac2[1]);
         let newDenString=printProduct(prodFrac.d,den1,den2,rFrac1[2],rFrac2[2]);
-        return '(' + newNumString + ')/(' + newDenString + ')';
+        return [math.parse(newNumString).transform(correctNode),math.parse(newDenString).transform(correctNode)];
+        //return '(' + newNumString + ')/(' + newDenString + ')';
     }
 }
 
-function divideRationalFraction(ratFrac1,ratFrac2){
+/*function divideRationalFraction(ratFrac1,ratFrac2){
     return multiplyRationalFraction(ratFrac1,[ratFrac2[1],ratFrac2[0]]);
-}
+}*/
 
 
 function solveRationalQuestions(rationalQuestion) {
