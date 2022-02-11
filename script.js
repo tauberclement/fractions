@@ -753,10 +753,28 @@ function checkAnswer(exercice,i,answer){
     if (autovalid===true) {return 1;}
     
     if (listExercises[idExercise].xvariable===true){
-        let num=math.parse(exponentToHat(numInput.value)).transform(correctNode);
-        let den=math.parse(exponentToHat(denInput.value)).transform(correctNode);
-        if (math.rationalize(num).toString()===math.rationalize(answer[0]).toString() && math.rationalize(den).toString()===math.rationalize(answer[1]).toString()) {return 1;}
-        else {return 0;}
+        let num=math.parse(exponentToHat(numInput.value)).transform(correctNode).transform(correctNode2);
+        let den=math.parse(exponentToHat(denInput.value)).transform(correctNode).transform(correctNode2);
+        
+        let numRationalized=math.rationalize(num).toString().replace(/\s/g, '');
+        let denRationalized=math.rationalize(den).toString().replace(/\s/g, '');
+        
+        let negNum=math.rationalize(negNode(num)).toString().replace(/\s/g, '');
+        let negDen=math.rationalize(negNode(den)).toString().replace(/\s/g, '');
+        
+        //let negNum=math.rationalize(new math.OperatorNode('-','unaryMinus',[new math.ParenthesisNode(num)])).toString().replace(/\s/g, '');
+        //let negDen=math.rationalize(new math.OperatorNode('-','unaryMinus',[new math.ParenthesisNode(den)])).toString().replace(/\s/g, '');
+        
+        let numAnswer=math.rationalize(answer[0]).toString().replace(/\s/g, '');
+        let denAnswer=math.rationalize(answer[1]).toString().replace(/\s/g, '');
+        
+        if ((numRationalized===numAnswer && denRationalized===denAnswer) || (negNum===numAnswer && negDen===denAnswer)) {return 1;}
+        
+        else {
+            let simplified=simplifyRatFrac(numRationalized,denRationalized);
+            if ((simplified[0]===numAnswer.replaceAll('*','') && simplified[1]===denAnswer.replaceAll('*','')) || (simplified[2]===numAnswer.replaceAll('*','') && simplified[3]===denAnswer.replaceAll('*',''))){return 2;}
+            else {return 0;}
+        }
     }
     
     else {
@@ -775,11 +793,35 @@ function exponentToHat(str){
     for (let i=0; i<10;i++){
         if (i===2 || i===3) {str=str.replace(String.fromCharCode('0xB'+i),'^'+i);}
         else if (i===1) {str=str.replace('\u00B9','');}
-        else if (i===0) {str=str.replace('x\u2070','1');}
+        else if (i===0) {
+            str=str.replace('x\u2070','1');
+            str=str.replace('\u2070','^0');
+        }
         else {str=str.replace(String.fromCharCode('0x207'+i),'^'+i);}
     }
     return str;
 }
+
+function negNode(node){
+    return new math.OperatorNode('*','multiply',[new math.ConstantNode(-1),node],true);
+}
+
+function simplifyRatFrac(numString,denString){    
+    let numP=new Polynomial(numString);
+    let denP=new Polynomial(denString);
+    let gN=gcdCoeffsPoly(numP);
+    let gD=gcdCoeffsPoly(denP);
+    if (gN>1 && gD>1){
+        let f=math.fraction(gN,gD);
+        numP=numP.mul(f.n/gN);
+        denP=denP.mul(f.d/gD);
+    }
+    let G=numP.gcd(denP);
+    let nG=G.mul(-1);
+    return [numP.div(G).toString(),denP.div(G).toString(),numP.div(nG).toString(),denP.div(nG).toString()];
+}
+
+
 
 function updateHistory(question,answer,correct){
     let p = document.createElement('p');
@@ -809,7 +851,15 @@ function updateHistory(question,answer,correct){
 //For rational fracions, the expressions x(x-a) ar interpreted as a function x of the variable x-a. This functions corrects the problem
 function correctNode(node,path,parent){
     if (node.type==='FunctionNode'){
+        //return new math.OperatorNode('*','multiply',[new math.ParenthesisNode(new math.OperatorNode('*','multiply',[new math.ConstantNode(1),new math.SymbolNode('x')])),node.args[0]],true);
         return new math.OperatorNode('*','multiply',[new math.SymbolNode('x'),node.args[0]],true);
+    }
+    else {return node;}
+}
+
+function correctNode2(node,path,parent){
+    if (node.fn==='unaryMinus'){
+        return new math.OperatorNode('*','multiply',[new math.ConstantNode('-1'),node.args[0]],true);
     }
     else {return node;}
 }
@@ -926,7 +976,11 @@ function printPartial(){
     let num=numInput.value;
     let den=denInput.value;
     let sign='';
-    if (signInput.checked) {sign='-';}
+    if (listExercises[idExercise].xvariable===false && signInput.checked) {sign='-';}
+    else {
+        num=exponentToHat(num);
+        den=exponentToHat(den);
+    }
     let result= sign + '\\frac\{' + num + '\}\{' + den +'\}';
     return result;
 }
@@ -982,10 +1036,10 @@ function factorPolynom(poly){
     else {return [-g,[-poly[0]/g,-poly[1]/g]];}
 }
 
-function auxUndefined(i){
+/*function auxUndefined(i){
     if (i===undefined){return 0;}
     else {return i;}
-}
+}*/
 
 function simplifyRationalFraction(ratFrac){
     let poly1f=factorPolynom(ratFrac[0]);
@@ -1012,6 +1066,22 @@ function polySize(poly){
         if (isFinite(poly.coeff[i])) {size=size+1;}
     }
     return size;
+}
+
+function gcdCoeffsPoly(poly){
+    let coeffs=[];
+    for (let i=0;i<=poly.degree();i++){
+        if(isFinite(poly.coeff[i])){coeffs.push(poly.coeff[i]);}
+    }
+    if(coeffs.length>1){return math.gcd.apply(this,coeffs);}
+    else {return poly.lc();}        
+} 
+
+function allCoeffsAreNegative(poly){
+    for (let i=0;i<=poly.degree();i++){
+        if(poly.coeff[i]>0){return false;}
+    }
+    return true;
 }
 
 function addRationalFractions(ratFrac1,ratFrac2){
@@ -1065,12 +1135,9 @@ function addRationalFractions(ratFrac1,ratFrac2){
     }
     
     //Last simplification if the numerator terms have a common factor.
-    let x0=auxUndefined(newNum.coeff[0]);
-    let x1=auxUndefined(newNum.coeff[1]);
-    let x2=auxUndefined(newNum.coeff[2]);
-    let g=math.gcd(x0,x1,x2);
+    let g=gcdCoeffsPoly(newNum);
     
-    if (x0<=0 && x1<=0 && x2<=0){g=-g;}
+    if (allCoeffsAreNegative(newNum)){g=-g;}
     
     if (g!==1 && polySize(newNum)>1){
         newNum=newNum.mul(1/g);
