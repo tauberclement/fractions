@@ -387,6 +387,10 @@ btn.addEventListener('click',function(event){
    event.preventDefault(); 
     
    //denInput.style.backgroundColor='#8ecae6';
+       
+   if (numInput.value==='') {
+       numInput.value=0;
+   }    
     
    if (denInput.value==='') {
        denInput.value=1;
@@ -768,7 +772,10 @@ function checkAnswer(exercice,i,answer){
         let numAnswer=math.rationalize(answer[0]).toString().replace(/\s/g, '');
         let denAnswer=math.rationalize(answer[1]).toString().replace(/\s/g, '');
         
-        if ((numRationalized===numAnswer && denRationalized===denAnswer) || (negNum===numAnswer && negDen===denAnswer)) {return 1;}
+        if ((numRationalized===numAnswer && denRationalized===denAnswer) || (negNum===numAnswer && negDen===denAnswer)) {
+            if (testCanonicalForm(num) && testCanonicalForm(den)) {return 1;}
+            else {return 2;}
+        }
         
         else {
             let simplified=simplifyRatFrac(numRationalized,denRationalized);
@@ -791,13 +798,13 @@ function checkAnswer(exercice,i,answer){
 
 function exponentToHat(str){
     for (let i=0; i<10;i++){
-        if (i===2 || i===3) {str=str.replace(String.fromCharCode('0xB'+i),'^'+i);}
-        else if (i===1) {str=str.replace('\u00B9','');}
+        if (i===2 || i===3) {str=str.replaceAll(String.fromCharCode('0xB'+i),'^'+i);}
+        else if (i===1) {str=str.replaceAll('\u00B9','');}
         else if (i===0) {
-            str=str.replace('x\u2070','1');
-            str=str.replace('\u2070','^0');
+            str=str.replaceAll('x\u2070','1');
+            str=str.replaceAll('\u2070','^0');
         }
-        else {str=str.replace(String.fromCharCode('0x207'+i),'^'+i);}
+        else {str=str.replaceAll(String.fromCharCode('0x207'+i),'^'+i);}
     }
     return str;
 }
@@ -819,6 +826,45 @@ function simplifyRatFrac(numString,denString){
     let G=numP.gcd(denP);
     let nG=G.mul(-1);
     return [numP.div(G).toString(),denP.div(G).toString(),numP.div(nG).toString(),denP.div(nG).toString()];
+}
+
+let nc;
+let nx;
+let nx2;
+
+function testCanonicalForm(node){
+    if (node.type==='ParenthesisNode'){return testCanonicalForm(node.content);}
+    else if (node.fn==='unaryMinus'){return testCanonicalForm(node.args[0]);}
+    else if (node.op==='*'){return testCanonicalForm(node.args[0]) && testCanonicalForm(node.args[1])}
+    else {return testCanonicalPolynom(node);}
+}
+
+function testCanonicalPolynom(node){
+    nc=0;
+    nx=0;
+    nx2=0;
+    node.traverse(countConstant);
+    node.traverse(countPowers1);
+    node.traverse(countPowers2);
+    if (nc<=1 && nx<=1 && nx2<=1){return true;}
+    else {return false;}
+}
+
+
+function countConstant(node,path,parent){
+    if (node.type==='ConstantNode' && parent===null){nc++;}
+    else if (node.type==='ConstantNode' && (parent.op==='+' || parent.op==='-')){nc++;}
+}
+
+
+function countPowers1(node,path,parent){
+    if (node.name==='x' && parent===null){nx++;}
+    else if (node.name==='x' && parent.op!=='^'){nx++;}
+}
+
+
+function countPowers2(node,path,parent){
+    if (node.op==='^' && node.args[0].name==='x' && node.args[1].value===2){nx2++;}
 }
 
 
