@@ -13,7 +13,8 @@
     font-display: swap;
 }
 
-@font-face {/* LateX font to write numbers outside Mathjax */
+/* LateX font to write numbers outside Mathjax */
+/*@font-face {
     font-family: 'latin_modern_roman10_regular';
     src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot');
     src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot?#iefix') format('embedded-opentype'),
@@ -23,7 +24,16 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+}*/
+
+@font-face {/* LateX font to write numbers outside Mathjax in input fields: italic letter and regular numbers and symbols  */
+    font-family: 'latin_modern_roman10_mixed';
+    src: url('fonts/latin-modern-regular/LMRoman10-mixedcustom.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
+
 
 
 @font-face { /* Used for the "Fraction" logo */
@@ -286,7 +296,7 @@ p {
 }
 
 .hrLong {
-    width:3.5em;
+    width:4.2em;
 }
 
 #partial {
@@ -445,7 +455,7 @@ label {/* Plus/Minus displayed as label for checkbox */
     border-radius: 50%;
     color:#023047;
     font-size:63%;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: "latin_modern_roman10_mixed", serif;
     font-weight: 900;
     user-select: none;
     transition: 0.3s;
@@ -459,6 +469,9 @@ input[type="checkbox"] {
   width: 0;
 }
 
+.minus {
+    margin-left: -2px;
+}
 
 input[type="checkbox"] ~ label .minus, input[type="checkbox"]:checked ~ label .plus {
         display:none;
@@ -479,7 +492,7 @@ input[type="number"], input[type="text"]{
     width:3ch;
     text-align: center;
     color:#023047;
-    font-family: 'latin_modern_roman10_regular', serif;
+    font-family: 'latin_modern_roman10_mixed', serif;
     transition: 0.3s;
 }
 
@@ -490,7 +503,7 @@ input[type="number"]:focus, input[type="text"]{
 }
 
 input[type="text"]{
-    width: 10ch;
+        width: 12ch;
 }
 
 
@@ -597,7 +610,7 @@ circle{
     font-size: 1.3rem;
     opacity:0;
     transition: opacity ease 0.5s;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: "latin_modern_roman10_mixed", serif;
 }
 
 #svgCountDown circle {
@@ -967,7 +980,8 @@ line {
     }
     
     input[type="text"]{
-        width: 10.5ch;
+        font-size:1.7rem;
+        width: 12.7ch;
     }
     
 
@@ -975,19 +989,20 @@ line {
     label {
         width:45px;
         height:45px;
-        line-height: 40px;
+        line-height: 38px;
         box-shadow: inset 3px 3px #123F54;
         margin-left: 15px;
+        font-size:80%;
     }
     
     .hrFraction {
         width:1.3em;
-        margin-top:10px;
-        margin-bottom: 10px;
+        margin-top:7px;
+        margin-bottom: 7px;
     }
     
     .hrLong {
-        width: 4em;
+        width: 4.4em;
     }
     
     #partial {
