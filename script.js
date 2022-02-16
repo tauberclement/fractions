@@ -317,20 +317,24 @@ let xvariableIntro = new tutorialExercise(
      ['-', [[0,1],[1,1]], [[1,0],[-1,1]] ],     //'x/(x+1)-1/(x-1)',
      ['+', [[2,0],[3,3]], [[0,1],[1,1]] ],      //'x/(2x+1)+3/(x+3)',
      ['*', [[1,1],[-1,1]], [[0,2],[-2,1]] ],    //'((x+1)/(x-1))*(2x/(x-2))',
-     ['/', [[0,3],[2,1]], [[1,1],[4,2]] ]],     //'(3x/(x+2))/((x+1)/(x+2))'],*/
+     ['/', [[0,3],[2,1]], [[2,2],[4,2]] ]],     //'(3x/(x+2))/((2x+2)/(x+2))'],*/
     ['Pour cette série d\'exercices, \\( x \\) est une variable réelle.',
     '',
     '',
-    'Pour écrire \\(x^2, x^3,\\ldots\\) appuyez sur ^ puis 2,3,... Les formes factorisées ou développées sont toutes les deux acceptées.',
-    '',
-    '',
+    'Pour écrire \\(x^2, x^3,\\ldots\\) appuyez sur ^ puis 2,3,... Proposez des expressions totalement factorisées ou totalement développées.',
+    'Pensez à simplifier au maximum chaque fraction rationnelle, la réponse est toujours une forme irréductible.',
+    'Vous pouvez utiliser la notation implicite pour la multiplication, ou bien le symbole *.',
     ''],
     true,
     listExercises
 );
 
 let xvarPractice = new randomExercise(
-    15,'Entrainement','#xvarPractice',14,16,[14],5,'xvar',2,-5,5,false,false,0,true,listExercises
+    15,'Entrainement','#xvarPractice',14,16,[14],9,'xvar',2,-5,5,false,false,0,true,listExercises
+);
+
+let xvarTimer = new randomExercise(
+    16,'Difficulté maximale','#xvarWithTimer',15,17,[15],5,'xvar',2,-7,7,false,true,120,true,listExercises
 );
 
 /*let exercise1 = new fixedExercise(
@@ -516,7 +520,7 @@ btn.addEventListener('click',function(event){
            }
            else {
                attemptsWithTimer +=1;
-               if (attemptsWithTimer===5) {
+               if (attemptsWithTimer===3) {
                attemptsWithTimer=0;
                openAlertMain();       
                }                 
@@ -1071,7 +1075,7 @@ function updateProgressBar(){
 function printRationalFraction(ratFrac){
     let poly1=new Polynomial(ratFrac[0]);
     let poly2=new Polynomial(ratFrac[1]);
-    if (poly2.degree()===0 && poly2.lc()===1) {return '1';}
+    if (poly2.degree()===0 && poly2.lc()===1) {return poly1.toString();}
     else {return '('+ poly1.toString() +')/('+  poly2.toString() +')';}
 }
 
@@ -1436,6 +1440,7 @@ buttonGraph.addBtnNode('#fiveInRow',12,['#firstAttempt']);
 buttonGraph.addBtnNode('#withTimer',13,['#fiveInRow']);
 buttonGraph.addBtnNode('#xvar',14,['#melange']);
 buttonGraph.addBtnNode('#xvarPractice',15,['#xvar']);
+buttonGraph.addBtnNode('#xvarWithTimer',16,['#xvarPractice']);
 
 
 function connectElements(btn1,btn2,resize) {

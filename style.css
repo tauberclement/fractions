@@ -321,9 +321,9 @@ p {
     font-size:0.9em;
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     /*padding-bottom: 10px;*/
-    height: 2.2em;
+    /*height: 2.2em;*/
 }
 
 #buttons {
@@ -852,6 +852,8 @@ ul {
     animation: blink ease 2s infinite;   
 }
 
+.btnMapSpecial {margin-left: 3.5%;}
+
 @keyframes blink {
     0% {border: 2px solid #FB8500; }
     50% {border: 2px solid black; }
@@ -872,13 +874,14 @@ line {
     top:30%;
     left:50%;
     background: white;
-    border: 3px solid #306BAC; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    /*border: 3px solid #306BAC; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    box-shadow: 0 0 7px #306BAC;
     border-radius : 5px;
     z-index: 3;
     padding:20px;
     width:260px;
     height:160px;
-    margin-left:-153px;
+    margin-left:-150px;
     transition: transform ease 1s;
     display:none;
 }
@@ -889,13 +892,13 @@ line {
 
 #crossAlertMap {
     position: absolute;
-    top:-3px;
-    right:-3px;
+    top:0px;
+    right:0px;
     color:#306BAC;
     font-size:1.3em;
     padding-right:5px;
     padding-left:5px;
-    border: 3px solid #306BAC;
+    /*border: 3px solid #306BAC;*/
     border-radius : 5px;
     cursor: pointer;
 }
@@ -942,11 +945,12 @@ line {
 
 @media screen and (min-width: 700px) {
     .containerMap, .container, .containerMenu{
-        border: 3px solid #306BAC;
-        margin: 5px auto;
+        /*border: 3px solid #306BAC;*/
+        margin: 7px auto;
+        box-shadow: 0 0 7px #306BAC;
     }
     
-    body {height: 97vh;}
+    body {height: 98vh;}
 }
 
 
