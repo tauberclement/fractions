@@ -13,7 +13,8 @@
     font-display: swap;
 }
 
-@font-face {/* LateX font to write numbers outside Mathjax */
+/* LateX font to write numbers outside Mathjax */
+/*@font-face {
     font-family: 'latin_modern_roman10_regular';
     src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot');
     src: url('fonts/latin-modern-regular/lmroman10-regular-webfont.eot?#iefix') format('embedded-opentype'),
@@ -23,7 +24,16 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+}*/
+
+@font-face {/* LateX font to write numbers outside Mathjax in input fields: italic letter and regular numbers and symbols  */
+    font-family: 'latin_modern_roman10_mixed';
+    src: url('fonts/latin-modern-regular/LMRoman10-mixedcustom.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
+
 
 
 @font-face { /* Used for the "Fraction" logo */
@@ -285,6 +295,10 @@ p {
     margin-bottom: 5px;
 }
 
+.hrLong {
+    width:4.2em;
+}
+
 #partial {
     color:#FB8500;
     display:none;
@@ -307,9 +321,9 @@ p {
     font-size:0.9em;
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     /*padding-bottom: 10px;*/
-    height: 2.2em;
+    /*height: 2.2em;*/
 }
 
 #buttons {
@@ -416,7 +430,7 @@ p {
 
 
 
-input[type=number] {
+input[type="number"], input[type="text"] {
   -webkit-appearance: none;   /*  Remove default style for Safari on iPad and iPhones */
   -moz-appearance: textfield; /*  Remove arrows for number input for Firefox*/
 }
@@ -441,7 +455,7 @@ label {/* Plus/Minus displayed as label for checkbox */
     border-radius: 50%;
     color:#023047;
     font-size:63%;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: "latin_modern_roman10_mixed", serif;
     font-weight: 900;
     user-select: none;
     transition: 0.3s;
@@ -455,6 +469,9 @@ input[type="checkbox"] {
   width: 0;
 }
 
+.minus {
+    margin-left: -2px;
+}
 
 input[type="checkbox"] ~ label .minus, input[type="checkbox"]:checked ~ label .plus {
         display:none;
@@ -464,7 +481,7 @@ input[type="checkbox"] ~ label .plus, input[type="checkbox"]:checked ~ label .mi
         display:block;
 }
 
-input[type="number"]{
+input[type="number"], input[type="text"]{
     background-color: #9BD0E9; /*#8ecae6; /*6#85C1E9;*/
     border-radius: 10px;
     border:none;
@@ -472,17 +489,21 @@ input[type="number"]{
     /*line-height: 2rem;*/
     box-shadow: inset 2px 2px #123F54;    
     /*height:2.7rem;*/
-    width:2.5ch;
+    width:3ch;
     text-align: center;
     color:#023047;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: 'latin_modern_roman10_mixed', serif;
     transition: 0.3s;
 }
 
-input[type="number"]:focus {
+input[type="number"]:focus, input[type="text"]{
     /*box-shadow: 0 0 0 1pt #023047;*/
     outline: none;
     /*transition: 0.5s;*/
+}
+
+input[type="text"]{
+        width: 12ch;
 }
 
 
@@ -589,7 +610,7 @@ circle{
     font-size: 1.3rem;
     opacity:0;
     transition: opacity ease 0.5s;
-    font-family: "latin_modern_roman10_regular", serif;
+    font-family: "latin_modern_roman10_mixed", serif;
 }
 
 #svgCountDown circle {
@@ -831,6 +852,8 @@ ul {
     animation: blink ease 2s infinite;   
 }
 
+.btnMapSpecial {margin-left: 3.5%;}
+
 @keyframes blink {
     0% {border: 2px solid #FB8500; }
     50% {border: 2px solid black; }
@@ -851,13 +874,14 @@ line {
     top:30%;
     left:50%;
     background: white;
-    border: 3px solid #306BAC; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    /*border: 3px solid #306BAC; /*#0077B6;/*#FB8500;/*#023047;/*#219ebc;*/
+    box-shadow: 0 0 7px #306BAC;
     border-radius : 5px;
     z-index: 3;
     padding:20px;
     width:260px;
     height:160px;
-    margin-left:-153px;
+    margin-left:-150px;
     transition: transform ease 1s;
     display:none;
 }
@@ -868,13 +892,13 @@ line {
 
 #crossAlertMap {
     position: absolute;
-    top:-3px;
-    right:-3px;
+    top:0px;
+    right:0px;
     color:#306BAC;
     font-size:1.3em;
     padding-right:5px;
     padding-left:5px;
-    border: 3px solid #306BAC;
+    /*border: 3px solid #306BAC;*/
     border-radius : 5px;
     cursor: pointer;
 }
@@ -921,11 +945,12 @@ line {
 
 @media screen and (min-width: 700px) {
     .containerMap, .container, .containerMenu{
-        border: 3px solid #306BAC;
-        margin: 5px auto;
+        /*border: 3px solid #306BAC;*/
+        margin: 7px auto;
+        box-shadow: 0 0 7px #306BAC;
     }
     
-    body {height: 97vh;}
+    body {height: 98vh;}
 }
 
 
@@ -951,25 +976,37 @@ line {
     
     #opacityWrapper {font-size: 2.3rem;}
     
-    input[type="number"] {
+    input[type="number"], input[type="text"]{
         font-size:1.9rem;
         line-height: 2.4rem;
         box-shadow: inset 3px 3px #123F54; 
         width:3.5ch;
     }
     
+    input[type="text"]{
+        font-size:1.7rem;
+        width: 12.7ch;
+    }
+    
+
+    
     label {
         width:45px;
         height:45px;
-        line-height: 40px;
+        line-height: 38px;
         box-shadow: inset 3px 3px #123F54;
         margin-left: 15px;
+        font-size:80%;
     }
     
     .hrFraction {
         width:1.3em;
-        margin-top:10px;
-        margin-bottom: 10px;
+        margin-top:7px;
+        margin-bottom: 7px;
+    }
+    
+    .hrLong {
+        width: 4.4em;
     }
     
     #partial {
@@ -1033,7 +1070,7 @@ line {
     .rowBtnMap {margin:25px;}
     
     .header {
-        padding-top:20px;
+        padding-top:15px;
         margin-bottom:20px;
     }
     
