@@ -444,10 +444,10 @@ btn.addEventListener('click',function(event){
                             opacityWrapper.style.display='none';
                             if(listExercises[idExercise].timer>0){
                                 spanSpeedRecord.textContent=printTime(totalTime);
-                                localStorage.setItem('Countdown Record',totalTime);
+                                localStorage.setItem('Countdown Record ' + idExercise,totalTime);
                                 lowerTimer();
                                 spanSpeedRecordNew.textContent=printTime(totalTime);
-                                localStorage.setItem('Countdown',totalTime);
+                                localStorage.setItem('Countdown ' + idExercise,totalTime);
                                 divCompletedSpeed.style.display='block';
                             }
                             else {
@@ -514,9 +514,9 @@ btn.addEventListener('click',function(event){
        }
        
        if (listExercises[idExercise].timer>0 && almostNoTime===true) {
-           if (localStorage.getItem('Countdown Record')===null){
+           if (localStorage.getItem('Countdown Record ' + idExercise)===null){
                increaseTimer();
-               localStorage.setItem('Countdown',totalTime);
+               localStorage.setItem('Countdown ' + idExercise,totalTime);
            }
            else {
                attemptsWithTimer +=1;
@@ -877,9 +877,11 @@ function updateHistory(question,answer,correct){
     let p = document.createElement('p');
     let frac;
     if (listExercises[idExercise].xvariable===true) {
-        answerTree=new math.OperatorNode('/','divide',[answer[0],answer[1]]);
-        //answerTree=answerTree.transform(correctNode);
-        frac=answerTree.toTex({parenthesis:'auto'});
+        if (answer[1].value===1){frac=answer[0].toTex({parenthesis:'auto'});}
+        else {
+            answerTree=new math.OperatorNode('/','divide',[answer[0],answer[1]]);
+            frac=answerTree.toTex({parenthesis:'auto'});
+        }
     }
     else {frac=printFraction(answer,false);}
     p.textContent= '\\(' + question + ' = ' + frac + '\\)';
@@ -937,8 +939,8 @@ function initializeExercise(id){
     if (listExercises[id].timer>0){
         divTimer.style.display='block';
         divButtons.style.justifyContent='space-around';
-        if (localStorage.getItem('Countdown')!==null){
-            totalTime=Number(localStorage.getItem('Countdown'));
+        if (localStorage.getItem('Countdown ' + idExercise)!==null){
+            totalTime=Number(localStorage.getItem('Countdown ' + idExercise));
         }
         else {totalTime=listExercises[id].timer;}
     }
@@ -1712,7 +1714,7 @@ function countDown(timestamp){
 function openAlertMain(){
     divAlertMain.classList.add('popDiv');
     divAlertMain.style.display='block';
-    spanSpeedRecordAlert.textContent=printTime(Number(localStorage.getItem('Countdown Record')));
+    spanSpeedRecordAlert.textContent=printTime(Number(localStorage.getItem('Countdown Record ' + idExercise)));
     spanActualSpeedAlert.textContent=printTime(totalTime);
 }
 
@@ -1727,6 +1729,6 @@ btnNoMoreTime.addEventListener('click',closeAlertMain);
 btnMoreTime.addEventListener('click',function(e){
     e.preventDefault();
     increaseTimer();
-    localStorage.setItem('Countdown',totalTime);
+    localStorage.setItem('Countdown ' + idExercise,totalTime);
     closeAlertMain();
 });
