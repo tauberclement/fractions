@@ -163,6 +163,12 @@ knowledge of the CeCILL license and that you accept its terms.
 .fa-refresh::before {
   content: "\f021"; }
 
+.fa-pencil::before {
+  content: "\f303"; }
+
+.fa-pen-to-square::before {
+  content: "\f044"; }
+
 
 /* --------- General Styles --------- */
 
@@ -503,7 +509,7 @@ input::-webkit-inner-spin-button {
 }
 
 
-label {/* Plus/Minus displayed as label for checkbox */
+.labelSign {/* Plus/Minus displayed as label for checkbox */
     display:block;
     width:30px;
     height:30px;
@@ -533,11 +539,11 @@ input[type="checkbox"] {
     margin-left: -2px;
 }
 
-input[type="checkbox"] ~ label .minus, input[type="checkbox"]:checked ~ label .plus {
+input[type="checkbox"] ~ .labelSign .minus, input[type="checkbox"]:checked ~ .labelSign .plus {
         display:none;
 }
 
-input[type="checkbox"] ~ label .plus, input[type="checkbox"]:checked ~ label .minus {
+input[type="checkbox"] ~ labelSign .plus, input[type="checkbox"]:checked ~ .labelSign .minus {
         display:block;
 }
 
@@ -566,6 +572,39 @@ input[type="text"]{
         width: 12ch;
 }
 
+#draft {
+    width: 70%;
+    font-family: 'latin_modern_roman10_mixed', serif;
+    font-size:1em;
+    text-align: center;
+    background-color: whitesmoke;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 10px auto 0 auto;
+    border:none;
+    border-radius: 10px;
+    box-shadow: 0 0 5px lightgrey;
+    box-sizing: border-box;
+    resize:vertical;
+    outline: none;
+    display:none;
+}
+
+#draftIcon {
+    font-size:1.5em;
+    color: #306BAC;
+    border: 3px solid #306BAC;
+    border-radius:10px;
+    padding: 3px 5px;
+    cursor:pointer;
+}
+
+#draftIcon:hover{
+    transform: scale(1.1);
+}
+#draftIcon:active{
+    transform: scale(1.05);
+}
 
 .validateButton {
     border-radius: 10px;
@@ -1060,7 +1099,7 @@ line {
     
 
     
-    label {
+    .labelSign {
         width:45px;
         height:45px;
         line-height: 38px;
@@ -1166,7 +1205,13 @@ line {
         text-align: left;
     }
     
-    #finished{font-size:1.2em;}
+    #finished {font-size:1.2em;}
     
+    #draft {
+        margin-bottom:10px;
+        font-size:1.3em;
+    }
+    
+    #draftIcon {font-size:1.9em;}
     
 }

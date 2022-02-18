@@ -84,6 +84,7 @@ knowledge of the CeCILL license and that you accept its terms.
                   <li> <span class="keyboard">/</span> ou <span class="keyboard">↓</span> : passer du numérateur au dénominateur</li>
                   <li><span class="keyboard">↑</span> : passer du dénominateur au numérateur</li>
                   <li><span class="keyboard">Entrée &crarr;</span> : valider la fraction</li>
+                  <li><span class="keyboard">B</span></li> : ouvrir/fermer le brouillon
               </ul> 
           Ex: <span class="keyboard">-</span> <span class="keyboard">5</span> <span class="keyboard">/</span> <span class="keyboard">7</span> <span class="keyboard">&crarr;</span> valide \(- \frac{5}{7} \).
           </div>
@@ -119,7 +120,7 @@ knowledge of the CeCILL license and that you accept its terms.
         <div id="allInputs"> 
         \(=\)
         <input type="checkbox" id="sign" name="sign" value="+1">
-        <label for="sign">
+        <label for="sign" class="labelSign">
                <span class="plus">+</span>
                <span class="minus">&minus;</span><!--&horbar;-->
         </label> 
@@ -136,12 +137,20 @@ knowledge of the CeCILL license and that you accept its terms.
           </div>
           <div id="completedExercise">Exercice terminé !</div>
           <div id="completedSpeed">Impressionnant ! <br>Record actuel : <span id="speedRecord"></span> par question. <br> Prochaine tentative : <span id="speedRecordNew"></span> par question. </div>
-         </div>
+          
+          
+        </div>
          
         <div id="tutorial">
         </div>
          
+         <div>   
+         <textarea id="draft" name="draft">Brouillon...</textarea>
+         </div>
+
+         
         <div id="buttons"> 
+            
         <div class="circle_box" id="countDown">
 		<div>  
 			<svg id="svgCountDown">
@@ -149,9 +158,11 @@ knowledge of the CeCILL license and that you accept its terms.
 			</svg>
 			<span id="hourglass"><i class="fas fa-hourglass"></i></span>
 		</div>
-	   </div>    
+	   </div> 
             
         <button id="valid" name="valid" class="validateButton">Valider <i id="skull" class="fas fa-skull"></i><i id="skullCrossbones" class="fas fa-skull-crossbones"></i></button>
+            
+
         <div class="circle_box">
 		<div>  
 			<svg id="svgProgressBar">
@@ -160,7 +171,14 @@ knowledge of the CeCILL license and that you accept its terms.
 			</svg>
 			<span id="counter"></span>
 		</div>
-	   </div>	
+        </div>
+            
+
+            
+        <div id="draftIcon"><i class="fa-solid fa-pencil"></i></div>  
+            
+
+	   
        </div>
         
        <div id="completed">
@@ -169,6 +187,7 @@ knowledge of the CeCILL license and that you accept its terms.
            <button id="next" class="navigationButton"><i class="fas fa-step-forward fa-4x"></i></button> 
       </div>  
         
+         
          
  
     </form>

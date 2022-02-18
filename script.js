@@ -42,7 +42,7 @@ const divHistory=document.querySelector('#history')
 const numInput=document.querySelector('#num');
 const denInput=document.querySelector('#den');
 const signInput=document.querySelector('#sign');
-const labelSign=document.querySelector('label');
+const labelSign=document.querySelector('.labelSign');
 const hrFraction=document.querySelector('.hrFraction')
 const divQuestion=document.querySelector('#current')
 const opacityWrapper=document.querySelector('#opacityWrapper');
@@ -81,6 +81,9 @@ const skullCrossBtn= document.querySelector('#skullCrossbones');
 const divMenu=document.querySelector('.containerMenu');
 
 const divFinished=document.querySelector('#finished');
+
+const divDraft=document.querySelector('#draft');
+const btnDraft=document.querySelector('#draftIcon');
 
 // ---- Defining Exercises objects and methods to generate random questions ------
 class fixedExercise {
@@ -458,6 +461,7 @@ btn.addEventListener('click',function(event){
        btn.style.backgroundColor='#6CAE75';
        raiseInput();
        cancelAnimationFrame(rAF);
+       divDraft.value='';
        setTimeout(()=>{
             i++;
             //updateProgressBar();
@@ -480,6 +484,7 @@ btn.addEventListener('click',function(event){
                         setTimeout(()=>{
                             divButtons.style.display='none';
                             opacityWrapper.style.display='none';
+                            divDraft.style.display='';
                             if(listExercises[idExercise].timer>0){
                                 spanSpeedRecord.textContent=printTime(totalTime);
                                 localStorage.setItem('Countdown Record ' + idExercise,totalTime);
@@ -585,6 +590,13 @@ btn.addEventListener('click',function(event){
         ,650); 
 });*/
 
+btnDraft.addEventListener('click',function(event){
+        event.preventDefault();
+        if (divDraft.style.display==='block'){divDraft.style.display='';}
+        else {
+            divDraft.style.display='block'; divDraft.select();}
+});
+
 nextLink.addEventListener('click',function(event){
         nextLink.disabled=true;
         event.preventDefault();
@@ -670,7 +682,7 @@ denInput.addEventListener('focus',function(){
     });
 
 window.addEventListener('keydown',function(e){
-    if (listExercises[idExercise]!==undefined && listExercises[idExercise].xvariable!==true){
+    if (listExercises[idExercise]!==undefined && listExercises[idExercise].xvariable!==true && divDraft.matches(':focus')===false){
         if (e.key==='+'){
             e.preventDefault();
             signInput.checked=false;
@@ -680,7 +692,20 @@ window.addEventListener('keydown',function(e){
             signInput.checked=true;
         }
     }
+    
+    if (e.key==='b' && divDraft.style.display==='block'){
+        e.preventDefault();
+        divDraft.style.display='';
+    }
+    
+    else if (e.key==='b' && divDraft.style.display===''){
+        e.preventDefault();
+        divDraft.style.display='block';
+        divDraft.select();
+    }
 });
+
+
 
 
 btnMenu.addEventListener('click',function(e){
@@ -1012,6 +1037,8 @@ function initializeExercise(id){
         numInput.setAttribute('type','number');
         denInput.setAttribute('type','number');
     }
+    divDraft.style.display='';
+    divDraft.value='Brouillon...'
     exercise=loadExercise(id);
     unfinishedExercise=true;
     i=0;//exercise.length-1;
@@ -1536,7 +1563,7 @@ function updateMap() {
         document.querySelector('.currentBtnMap').classList.remove('currentBtnMap');
     }
     
-    if (localStorage.getItem('Status Exercise 15')=== 'completed' && (localStorage.getItem('Status Exercise 16')=== 'completed')){
+    if (localStorage.getItem('Status Exercise 15')=== 'completed' && (localStorage.getItem('Status Exercise 16')=== 'completed') && divFinished.style.display===''){
         divFinished.style.display='block';
         divFinished.scrollIntoView();
     }
