@@ -1,4 +1,8 @@
-<!-- 
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <!-- 
 Copyright or © or Copr. Clément Tauber (18.02.2022)
 
 clement.tauber@math.unistra.fr
@@ -31,11 +35,7 @@ same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
--->
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8">
+-->  
     <meta name="author" content="Clément Tauber">
     <meta name="description" content="Fractions est une appli web libre et gratuite pour réviser et s'entraîner au calcul de fractions de façon progressive. L'appli comprend des exercices pour revoir les différentes règles de calcul (addition, multiplication,...) ainsi que des exercices générés aléatoirement pour s'entraîner à volonté. Les fractions rationnelles et les fractions complexes sont aussi abordées à la fin.">  
       
@@ -87,7 +87,7 @@ knowledge of the CeCILL license and that you accept its terms.
               </ul> 
           Ex: <span class="keyboard">-</span> <span class="keyboard">5</span> <span class="keyboard">/</span> <span class="keyboard">7</span> <span class="keyboard">&crarr;</span> valide \(- \frac{5}{7} \).
           </div>
-          <div class="hiddenTextBox" id="aboutText">Fractions est une application web libre et gratuite sous licence <a href="https://www.cecill.info/" target="_blank">CeCILL</a> développée par Clément Tauber.<br> Version 18 février 2022 (<a href="https://github.com/tauberclement/fractions" target="_blank">code source</a>).<br> Fractions ne collecte aucune donnée de traffic ou d'utilisation, donc vos remarques et commentaires à <a href="mailto:clement.tauber@math.unistra.fr">cette adresse</a> sont les bienvenus. </div>
+          <div class="hiddenTextBox" id="aboutText">Fractions est une application web libre et gratuite sous licence <a href="https://www.cecill.info/" target="_blank" rel="noopener">CeCILL</a> développée par Clément Tauber.<br> Version 18 février 2022 (<a href="https://github.com/tauberclement/fractions" target="_blank" rel="noopener">code source</a>).<br> Fractions ne collecte aucune donnée de traffic ou d'utilisation, donc vos remarques et commentaires à <a href="mailto:clement.tauber@math.unistra.fr">cette adresse</a> sont les bienvenus. </div>
       </div>
     </div>
       
@@ -191,6 +191,7 @@ knowledge of the CeCILL license and that you accept its terms.
           <div id="alertMap"><div id="crossAlertMap">✕</div>Appuyez sur Confirmer pour changer d'exercice. Pour revenir à l'exercice en cours, cliquez plutôt sur <i class="fas fa-reply"></i> Retour.  <br>
           <button id="confirmSwitch" class="menubutton">Confirmer</button></div>
           
+          
       
           <div class="rowBtnMap">
           <button id="priseEnMain" class="mapbutton hiddenBtnMap" disabled><i class="far fa-comment-dots"></i> \(\,| \) <i class="fas fa-graduation-cap"></i> </button>
@@ -234,6 +235,9 @@ knowledge of the CeCILL license and that you accept its terms.
             
             <button id="xvarWithTimer" class="mapbutton hiddenBtnMap btnMapSpecial" disabled><span class="horizontalBtnMap">\(\frac{1}{2x} \,|\) </span><span class="verticalBtnMap">\(\frac{1}{2x} \)</span><hr class="hrBtnMap"><i class="fas fa-hourglass"></i> <i class="fas fa-skull-crossbones"></i> <i class="fas fa-random"></i></button> 
         </div>
+        
+          <div id="finished">Félicitations, vous avez terminé ! Continuez à vous entraîner sur les exercices <i class="fas fa-random"></i>, générés aléatoirement, et améliorez votre temps sur les exercices <i class="fas fa-hourglass"></i>. Envoyez vos commentaires à propos de l'application à <a href="mailto:clement.tauber@math.unistra.fr">cette adresse</a>.</div>
+          
         <svg id="svgMap">
               
         </svg>

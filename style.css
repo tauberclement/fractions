@@ -1003,6 +1003,16 @@ line {
     border-top: 1px solid white;
 }
 
+#finished {
+    font-family: "candelabook", Arial, sans-serif;
+    font-size:0.9em;
+    color: #023047;
+    text-align: justify;
+    padding: 0 15px;
+    padding-bottom: 15px;
+    display:none;
+}
+
 @media screen and (min-width: 700px) {
     .containerMap, .container, .containerMenu{
         /*border: 3px solid #306BAC;*/
@@ -1155,6 +1165,8 @@ line {
         margin: 20px auto;
         text-align: left;
     }
+    
+    #finished{font-size:1.2em;}
     
     
 }

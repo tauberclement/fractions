@@ -80,6 +80,8 @@ const skullCrossBtn= document.querySelector('#skullCrossbones');
 
 const divMenu=document.querySelector('.containerMenu');
 
+const divFinished=document.querySelector('#finished');
+
 // ---- Defining Exercises objects and methods to generate random questions ------
 class fixedExercise {
     constructor(id,title,idButton,previous,next,parents,questions,xvariable,list){
@@ -1533,6 +1535,12 @@ function updateMap() {
     while(document.querySelector('.currentBtnMap')){
         document.querySelector('.currentBtnMap').classList.remove('currentBtnMap');
     }
+    
+    if (localStorage.getItem('Status Exercise 15')=== 'completed' && (localStorage.getItem('Status Exercise 16')=== 'completed')){
+        divFinished.style.display='block';
+        divFinished.scrollIntoView();
+    }
+    
     for (const node of buttonGraph.nodes){
         let btnbis=document.querySelector(node.id);
         let exo = listExercises[node.idExo];
@@ -1593,6 +1601,8 @@ function updateMap() {
     if (updated===false) {connectAll();}
     //if (storageUpdated==false) {setTimeout(connectAll,1300);}
     storageUpdated=true;
+    
+
 }
 
 function findIdExercise(buttonId) {
