@@ -1,6 +1,42 @@
+/*
+Copyright or © or Copr. Clément Tauber (18.02.2022)
+
+clement.tauber@math.unistra.fr
+
+This software is a computer program whose purpose is to help students 
+to practice on exercices about mathematical fractions.
+
+This software is governed by the CeCILL license under French law and
+abiding by the rules of distribution of free software.  You can  use, 
+modify and/ or redistribute the software under the terms of the CeCILL
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info". 
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability. 
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or 
+data to be ensured and,  more generally, to use and operate it in the 
+same conditions as regards security. 
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL license and that you accept its terms.
+*/
+
 
 const btn = document.querySelector('#valid');
 const divMain= document.querySelector('.container');
+const divMainWrapper =document.querySelector('.mainWrapper');
 const spanQuestion = document.querySelector('#question');
 const divHistory=document.querySelector('#history')
 const numInput=document.querySelector('#num');
@@ -401,7 +437,7 @@ btn.addEventListener('click',function(event){
    }
     
    if (denInput.value==='0') {
-       denInput.style.backgroundColor='red';
+       denInput.style.backgroundColor='#EF233C';
        return false;
    }
     
@@ -483,7 +519,7 @@ btn.addEventListener('click',function(event){
        setTimeout(()=> {divPartial.classList.remove('popDiv');},1000);
    }    
    else {//The anwser is wrong
-       btn.style.backgroundColor='red'
+       btn.style.backgroundColor='#EF233C';//'#CC2836'
        btn.classList.add('shakeButton');
        cancelAnimationFrame(rAF);
        setTimeout(()=> {btn.classList.remove('shakeButton');},1000);  
@@ -505,7 +541,7 @@ btn.addEventListener('click',function(event){
        
        else if (listExercises[idExercise].fiveInRow===true) {
             raiseInput();
-            if (i>0) {circleAround.style.stroke='red';}
+            if (i>0) {circleAround.style.stroke='#EF233C';}
             setTimeout(()=>{opacityWrapper.style.opacity=0;},500);
             setTimeout(()=>{
                 initializeExercise(idExercise);
@@ -674,14 +710,14 @@ function loadExercise(j){
         h1Title.textContent += ' ';
         h1Title.appendChild(icon);
     }
-    if (currentExercise.constructor===tutorialExercise){
+    /*if (currentExercise.constructor===tutorialExercise){
         divTutorial.style.display='block';
         divHistory.style.height='40%';
     }
     else {
         divTutorial.style.display='none';
         divHistory.style.height='45%';
-    }
+    }*/
     setTimeout(()=>{h1Title.style.opacity=1;},100);
     divQuestion.style.display='flex';
     opacityWrapper.style.display='flex';
@@ -1376,7 +1412,7 @@ btnMaptoMenu.addEventListener('click',function(e){
 
 btnMaptoMain.addEventListener('click',function(e){
     e.preventDefault();
-    divMain.style.display='block';
+    divMain.style.display='flex';
     divMap.style.display='none'; 
     //window.removeEventListener('resize',connectAll)
 })
@@ -1513,7 +1549,7 @@ function updateMap() {
                     else { 
                         resetExerciseContainer();
                         divMap.style.display='none';
-                        divMain.style.display='block';
+                        divMain.style.display='flex';
                         //window.removeEventListener('resize',connectAll)
                         initializeExercise(idExercise)
                         MathJax.typeset(document.querySelectorAll('#question'));
@@ -1542,7 +1578,7 @@ function updateMap() {
                         else { 
                             resetExerciseContainer();
                             divMap.style.display='none';
-                            divMain.style.display='block';
+                            divMain.style.display='flex';
                             //window.removeEventListener('resize',connectAll)
                             initializeExercise(idExercise)
                             MathJax.typeset(document.querySelectorAll('#question'));
@@ -1584,7 +1620,7 @@ function openAlertMap(idExercise){
         closeAlertMap();
         resetExerciseContainer();
         divMap.style.display='none';
-        divMain.style.display='block';
+        divMain.style.display='flex';
         //window.removeEventListener('resize',connectAll)
         initializeExercise(idExercise)
         MathJax.typeset(document.querySelectorAll('#question'));   
@@ -1701,7 +1737,7 @@ function countDown(timestamp){
     arcCircle(percent);
     
     if (percent<0){
-        hourGlass.style.color='red';
+        hourGlass.style.color='#EF233C';
         startTime=null;
         cancelAnimationFrame(rAF);
         btn.click();

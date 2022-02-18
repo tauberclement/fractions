@@ -1,3 +1,37 @@
+<!-- 
+Copyright or © or Copr. Clément Tauber (18.02.2022)
+
+clement.tauber@math.unistra.fr
+
+This software is a computer program whose purpose is to help students 
+to practice on exercices about mathematical fractions.
+
+This software is governed by the CeCILL license under French law and
+abiding by the rules of distribution of free software.  You can  use, 
+modify and/ or redistribute the software under the terms of the CeCILL
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info". 
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability. 
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or 
+data to be ensured and,  more generally, to use and operate it in the 
+same conditions as regards security. 
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL license and that you accept its terms.
+-->
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -39,7 +73,9 @@
           <button id="about" class="menubutton">A propos</button>
       </div>
       <div class="menuTextBox">
-          <div class="hiddenTextBox" id="eraseText">Cliquer sur confirmer pour effacer les données stockées sur ce navigateur et réinitialiser votre progression dans les exercices. <br> <button id="confirmErase" class="menubutton">Confirmer</button></div>
+          <div class="hiddenTextBox" id="eraseText">
+              Fractions ne collecte aucune donnée mais sauvegarde votre progression localement dans votre navigateur. <br><br>
+              Cliquez sur confirmer pour effacer cette sauvegarde et réinitialiser votre progression. <br> <button id="confirmErase" class="menubutton">Confirmer</button></div>
           <div class="hiddenTextBox" id="erasingTerminated">Les données ont été effacées !</div>
           <div class="hiddenTextBox" id="offlineText">Mode hors-ligne en construction...</div>
           <div class="hiddenTextBox" id="shortcutsText">Si vous disposez d'un clavier, vous pouvez utiliser les raccourcis suivants:
@@ -51,13 +87,13 @@
               </ul> 
           Ex: <span class="keyboard">-</span> <span class="keyboard">5</span> <span class="keyboard">/</span> <span class="keyboard">7</span> <span class="keyboard">&crarr;</span> valide \(- \frac{5}{7} \).
           </div>
-          <div class="hiddenTextBox" id="aboutText">Fractions est une appli web libre et gratuite développée par Clément Tauber (clement.tauber -arobase- math.unistra.fr).<br> Version 1.0 du 16 janvier 2022. <br> Code source bientôt disponible.</div>
+          <div class="hiddenTextBox" id="aboutText">Fractions est une application web libre et gratuite sous licence <a href="https://www.cecill.info/" target="_blank">CeCILL</a> développée par Clément Tauber.<br> Version 18 février 2022 (<a href="https://github.com/tauberclement/fractions" target="_blank">code source</a>).<br> Fractions ne collecte aucune donnée de traffic ou d'utilisation, donc vos remarques et commentaires à <a href="mailto:clement.tauber@math.unistra.fr">cette adresse</a> sont les bienvenus. </div>
       </div>
     </div>
       
       
       <div class="container">
-          
+        <div class="mainWrapper">
         <div id="alertMain">Votre record est de <span id="speedRecordAlert"></span> par question. Actuellement, vous disposez de <span id="actualSpeedAlert"></span> par question. Voulez vous plus de temps ?<br>
         <button id="moreTime" class="menubutton">Oui</button> <button id="noMoreTime" class="menubutton">Non</button>
         </div>  
@@ -136,6 +172,8 @@
          
  
     </form>
+            
+        </div>  
            <div id="history">
           
       </div>

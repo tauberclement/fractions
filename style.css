@@ -1,3 +1,38 @@
+/*
+Copyright or © or Copr. Clément Tauber (18.02.2022)
+
+clement.tauber@math.unistra.fr
+
+This software is a computer program whose purpose is to help students 
+to practice on exercices about mathematical fractions.
+
+This software is governed by the CeCILL license under French law and
+abiding by the rules of distribution of free software.  You can  use, 
+modify and/ or redistribute the software under the terms of the CeCILL
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info". 
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability. 
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or 
+data to be ensured and,  more generally, to use and operate it in the 
+same conditions as regards security. 
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL license and that you accept its terms.
+*/
+
 /* --------- Fonts --------- */
 
 
@@ -153,6 +188,18 @@ p {
     /*transition: opacity 0.5s;*/
 }
 
+a {
+    color:#306BAC;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+a:active{
+    color:#023047;
+}
 
 /* --------- Level container --------- */
 .container {
@@ -167,6 +214,12 @@ p {
     box-sizing: border-box;
     display:none;
     overflow: hidden;
+    flex-direction: column;
+}
+
+.mainWrapper {
+    padding: 0;
+    margin:0;
 }
 
 .header {
@@ -212,12 +265,20 @@ p {
     text-align: right;
 }
 
-.menulink:hover {
-    transform: scale(1.1);
+.menuleft:hover {
+    transform: scale(1.1) translateX(5px);
 }
 
-.menulink:active {
-    transform: scale(1.05);
+.menuleft:active {
+    transform: scale(1.05) translateX(2px);
+}
+
+.menuright:hover {
+    transform: scale(1.1) translateX(-5px);
+}
+
+.menuright:active {
+    transform: scale(1.05) translateX(-2px);
 }
 
 
@@ -339,7 +400,6 @@ p {
     overflow: auto;
     margin-top:15px;
     margin-bottom: 10px;
-    height: 60%;
 }
 
 .validCheck {
@@ -749,7 +809,7 @@ ul {
 
 #confirmErase {
     width: 10ch;
-    margin: 10px 70px;
+    margin: 20px 70px;
 }
 
 #erasingTerminated {
@@ -1079,15 +1139,15 @@ line {
     }
     
     .menuTextBox {
-        font-size:1.2em;
-        width: 70%;
+        font-size:1.1em;
+        width: 60%;
         margin: 80px auto 40px auto;
         padding:0;
         text-align: center;   
     }
     
     #confirmErase {
-        margin: 20px 0;
+        margin: 30px 0;
         font-size: 1.2em;
     }
     
