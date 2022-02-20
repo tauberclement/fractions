@@ -533,6 +533,7 @@ btn.addEventListener('click',function(event){
 
        if (listExercises[idExercise].oneAttempt===true) {
            raiseInput();
+           divDraft.value='';
            setTimeout(()=>{opacityWrapper.style.opacity=0;},500);
            setTimeout(()=>{
                updateHistory(question,answer,false)
@@ -675,7 +676,12 @@ denInput.addEventListener('compositionend', (event) => {
     }
 });
 
-
+divDraft.addEventListener('compositionend', (event) => {
+        if (event.data[0]==='^' && isFinite(event.data[1])){
+            event.preventDefault();
+            divDraft.value=divDraft.value.slice(0,divDraft.selectionStart-2) + unicodeDigit(event.data[1]) + divDraft.value.slice(divDraft.selectionStart);
+        }
+});
 
 denInput.addEventListener('focus',function(){
     denInput.style.backgroundColor='#8ecae6';
@@ -1736,7 +1742,6 @@ function lowerTimer(){
     else if (totalTime>120 && totalTime<=180) {totalTime-=20;}
     else if (totalTime>60 && totalTime<=120) {totalTime-=10;}
     else if (totalTime>10 && totalTime<=60) {totalTime-=5;}
-    console.log('Total Time = ' + totalTime);
 }
 
 function increaseTimer(){
@@ -1744,7 +1749,6 @@ function increaseTimer(){
     else if (totalTime<120 && totalTime>=60) {totalTime+=10;}
     else if (totalTime<270 && totalTime>=120) {totalTime+=30;}
     else if (totalTime>=270) {totalTime=300;}
-    console.log('Total Time = ' + totalTime);
     // we do not increase the timer above 5 minutes.
 }
 

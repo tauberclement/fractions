@@ -385,7 +385,7 @@ a:active{
 #tutorial {
     font-family: "candelabook", Arial, sans-serif;
     /*font-family: "capsuularegular", Arial, sans-serif;*/
-    font-size:0.9em;
+    font-size:1em;
     margin-left: 15px;
     margin-right: 15px;
     /*margin-bottom: 10px;*/
@@ -575,7 +575,7 @@ input[type="text"]{
 #draft {
     width: 70%;
     font-family: 'latin_modern_roman10_mixed', serif;
-    font-size:1em;
+    font-size:1.1em;
     text-align: center;
     background-color: whitesmoke;
     padding-top: 5px;
