@@ -1599,7 +1599,7 @@ function updateMap() {
         }   
         
         if (btnbis.disabled===false && btnbis.classList.contains('achievedBtnMap')===false && exo.status===1) {
-            updated=true;
+             updated=true;
             btnbis.classList.add('achievedBtnMap');
             btnbis.style.backgroundColor='#306BAC';
             let hrId = node.id + ' hr';
@@ -1652,22 +1652,25 @@ crossAlertMap.addEventListener('click',closeAlertMap);
 
 function closeAlertMap(){
     divAlertMap.classList.remove('popDiv');
-    divAlertMap.style.display='none';    
+    divAlertMap.style.display='none';
+    btnConfirmSwitch.removeEventListener('click',switchExercise,{once:true})
 }
 
 function openAlertMap(idExercise){
     divAlertMap.classList.add('popDiv');
     divAlertMap.style.display='block';
-    btnConfirmSwitch.addEventListener('click',function(e){
-        e.preventDefault();
-        closeAlertMap();
-        resetExerciseContainer();
-        divMap.style.display='none';
-        divMain.style.display='flex';
-        //window.removeEventListener('resize',connectAll)
-        initializeExercise(idExercise)
-        MathJax.typeset(document.querySelectorAll('#question'));   
-    },{once:true});
+    btnConfirmSwitch.addEventListener('click',switchExercise, {once:true});
+}
+
+function switchExercise(e){
+    closeAlertMap();
+    e.preventDefault();
+    resetExerciseContainer();
+    divMap.style.display='none';
+    divMain.style.display='flex';
+    //window.removeEventListener('resize',connectAll)
+    initializeExercise(idExercise)
+    MathJax.typeset(document.querySelectorAll('#question'));
 }
 
 /* ----- Local data storage ------- */
