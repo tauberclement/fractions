@@ -413,6 +413,7 @@ let exercise3 = new fixedExercise(
 // Initialization 
 
 let idExercise;
+let idExerciseBackup;//To fix a bug
 let question;
 let exerciseLenght=1;
 let messages=[];
@@ -598,8 +599,18 @@ btnDraft.addEventListener('click',function(event){
             divDraft.style.display='block'; divDraft.select();}
 });
 
+//Somehow clearing all timeout reduces javascript heap, even though they are all finished
+function cleanTimeouts(){
+    let highestId = window.setTimeout(() => {
+            for (let i = highestId; i >= 0; i--) {
+                window.clearInterval(i);
+            }
+    }, 0);
+}
+
 nextLink.addEventListener('click',function(event){
         nextLink.disabled=true;
+        cleanTimeouts();
         event.preventDefault();
         divMain.style.display='none'; 
         divMap.style.display='block';
@@ -615,6 +626,7 @@ nextLink.addEventListener('click',function(event){
 
 btnRestart.addEventListener('click',function(event){
         event.preventDefault();
+        cleanTimeouts();
         divCompletedExercise.style.display='none';
         divCompleted.style.opacity=0;
         divCompletedSpeed.style.display='none';
@@ -1004,6 +1016,7 @@ function clearHistory(){
 function initializeExercise(id){
     clearHistory();
     MathJax.typesetClear(divMain);
+    idExerciseBackup=id;
     // Dealing with countdown
     if (listExercises[id].timer>0){
         divTimer.style.display='block';
@@ -1447,6 +1460,7 @@ btnMaptoMenu.addEventListener('click',function(e){
 
 btnMaptoMain.addEventListener('click',function(e){
     e.preventDefault();
+    idExercise=idExerciseBackup;
     divMain.style.display='flex';
     divMap.style.display='none'; 
     //window.removeEventListener('resize',connectAll)
@@ -1588,6 +1602,7 @@ function updateMap() {
                     idExercise=node.idExo;
                     if (unfinishedExercise===true) {openAlertMap(idExercise);}
                     else { 
+                        cleanTimeouts();
                         resetExerciseContainer();
                         divMap.style.display='none';
                         divMain.style.display='flex';
@@ -1617,6 +1632,7 @@ function updateMap() {
                         idExercise=findIdExercise(idChild);
                         if (unfinishedExercise===true) {openAlertMap(idExercise);}
                         else { 
+                            cleanTimeouts();
                             resetExerciseContainer();
                             divMap.style.display='none';
                             divMain.style.display='flex';
@@ -1664,6 +1680,7 @@ function openAlertMap(idExercise){
 
 function switchExercise(e){
     closeAlertMap();
+    cleanTimeouts();
     e.preventDefault();
     resetExerciseContainer();
     divMap.style.display='none';
